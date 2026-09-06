@@ -70,15 +70,18 @@
   padding: 0 12px 0 18px;
   border: 1px solid #80868b;
   border-radius: 22px;
-  background: #dadce0;
+  background: var(--color-surface);
   color: var(--color-text);
   cursor: pointer;
   font-weight: 500;
 }
 
-.view-selector__button:hover,
+.view-selector__button:hover {
+  background: var(--color-surface-hover);
+}
+
 .view-selector__button[aria-expanded='true'] {
-  background: #c5c7c8;
+  background: #dadce0;
 }
 
 .view-selector__button svg {
