@@ -18,7 +18,7 @@ function App() {
 
   function showPreviousPeriod() {
     setDisplayDate((date) => {
-      if (activeView === 'day') return addDays(date, -1)
+      if (activeView === 'day' || activeView === 'schedule') return addDays(date, -1)
       if (activeView === 'week') return addDays(date, -7)
 
       return addMonths(date, -1)
@@ -27,7 +27,7 @@ function App() {
 
   function showNextPeriod() {
     setDisplayDate((date) => {
-      if (activeView === 'day') return addDays(date, 1)
+      if (activeView === 'day' || activeView === 'schedule') return addDays(date, 1)
       if (activeView === 'week') return addDays(date, 7)
 
       return addMonths(date, 1)
@@ -68,7 +68,7 @@ function App() {
       <div className="calendar-app__body">
         <Sidebar
           displayMonth={displayMonth}
-          selectedDate={selectedDate}
+          selectedDate={activeView === 'schedule' ? displayDate : selectedDate}
           onPreviousMonth={showPreviousMonth}
           onNextMonth={showNextMonth}
           onSelectDate={selectDate}

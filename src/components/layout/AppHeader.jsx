@@ -1,10 +1,17 @@
-import { formatMonthYear, formatWeekRange } from '../../utils/dateHelpers.js'
+import {
+  addDays,
+  addMonths,
+  formatMonthYear,
+  formatWeekRange,
+  startOfDay,
+} from '../../utils/dateHelpers.js'
 import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
 function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
   const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
+  const isScheduleView = activeView === 'schedule'
   const periodLabel = isDayView
     ? displayDate.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -12,8 +19,12 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
       day: 'numeric',
       year: 'numeric',
     })
-    : isWeekView ? formatWeekRange(displayDate) : formatMonthYear(displayDate)
-  const periodUnit = isDayView ? 'day' : isWeekView ? 'week' : 'month'
+    : isWeekView
+      ? formatWeekRange(displayDate)
+      : isScheduleView
+        ? formatScheduleRange(displayDate)
+        : formatMonthYear(displayDate)
+  const periodUnit = isDayView || isScheduleView ? 'day' : isWeekView ? 'week' : 'month'
   const previousLabel = `Previous ${periodUnit}`
   const nextLabel = `Next ${periodUnit}`
 
@@ -46,6 +57,16 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
       </div>
     </header>
   )
+}
+
+function formatScheduleRange(value) {
+  const rangeStart = startOfDay(value)
+  const rangeEnd = addDays(addMonths(rangeStart, 6), -1)
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    year: 'numeric',
+  }).formatRange(rangeStart, rangeEnd)
 }
 
 export default AppHeader
