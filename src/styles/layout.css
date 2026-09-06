@@ -65,12 +65,12 @@
 .view-selector__button {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 40px;
   gap: 8px;
-  padding: 0 10px 0 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
+  padding: 0 12px 0 18px;
+  border: 1px solid #80868b;
+  border-radius: 22px;
+  background: #dadce0;
   color: var(--color-text);
   cursor: pointer;
   font-weight: 500;
@@ -78,7 +78,7 @@
 
 .view-selector__button:hover,
 .view-selector__button[aria-expanded='true'] {
-  background: var(--color-surface-hover);
+  background: #c5c7c8;
 }
 
 .view-selector__button svg {
@@ -93,19 +93,24 @@
 
 .view-selector__menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 4px);
   right: 0;
   display: grid;
-  min-width: 144px;
+  min-width: 320px;
   padding: 8px 0;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
-  background: var(--color-surface);
+  background: #f8fafd;
   box-shadow: 0 2px 6px rgba(60, 64, 67, 0.25), 0 8px 16px rgba(60, 64, 67, 0.15);
 }
 
 .view-selector__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: 9px 16px;
+  min-height: 40px;
+  padding: 8px 16px;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -119,8 +124,46 @@
 }
 
 .view-selector__option[aria-checked='true'] {
-  color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
+}
+
+.view-selector__shortcut {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.view-selector__settings {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.view-selector__setting {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  min-height: 40px;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.view-selector__setting:hover,
+.view-selector__setting:focus-visible {
+  background: var(--color-surface-hover);
+}
+
+.view-selector__checkmark {
+  color: #0b57d0;
+  font-size: 18px;
+  line-height: 1;
 }
 
 .icon-button,
@@ -268,7 +311,8 @@
 .today-button:focus-visible,
 .create-button:focus-visible,
 .view-selector__button:focus-visible,
-.view-selector__option:focus-visible {
+.view-selector__option:focus-visible,
+.view-selector__setting:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }

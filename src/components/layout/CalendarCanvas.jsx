@@ -1,7 +1,15 @@
 import MonthView from '../calendar/MonthView.jsx'
 
+const VIEW_LABELS = {
+  day: 'Day',
+  week: 'Week',
+  year: 'Year',
+  schedule: 'Schedule',
+  'four-days': '4 days',
+}
+
 function CalendarPlaceholder({ activeView }) {
-  const viewLabel = `${activeView.charAt(0).toUpperCase()}${activeView.slice(1)}`
+  const viewLabel = VIEW_LABELS[activeView]
 
   return (
     <section className="calendar-placeholder" aria-labelledby="calendar-placeholder-title">

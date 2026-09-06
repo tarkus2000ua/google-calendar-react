@@ -2,14 +2,27 @@ import { useRef, useState } from 'react'
 import icons from '../ui/icons.jsx'
 
 const VIEW_OPTIONS = [
-  { value: 'month', label: 'Month' },
-  { value: 'week', label: 'Week' },
-  { value: 'day', label: 'Day' },
-  { value: 'agenda', label: 'Agenda' },
+  { value: 'day', label: 'Day', shortcut: 'D' },
+  { value: 'week', label: 'Week', shortcut: 'W' },
+  { value: 'month', label: 'Month', shortcut: 'M' },
+  { value: 'year', label: 'Year', shortcut: 'Y' },
+  { value: 'schedule', label: 'Schedule', shortcut: 'A' },
+  { value: 'four-days', label: '4 days', shortcut: 'X' },
+]
+
+const DISPLAY_OPTIONS = [
+  { value: 'weekends', label: 'Show weekends' },
+  { value: 'declined-events', label: 'Show declined events' },
+  { value: 'completed-tasks', label: 'Show completed tasks' },
 ]
 
 function ViewSelector({ activeView, onViewChange }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [displayOptions, setDisplayOptions] = useState({
+    weekends: true,
+    'declined-events': true,
+    'completed-tasks': true,
+  })
   const buttonRef = useRef(null)
   const activeOption = VIEW_OPTIONS.find((option) => option.value === activeView) ?? VIEW_OPTIONS[0]
 
@@ -21,6 +34,13 @@ function ViewSelector({ activeView, onViewChange }) {
   function selectView(view) {
     onViewChange(view)
     closeMenu()
+  }
+
+  function toggleDisplayOption(option) {
+    setDisplayOptions((options) => ({
+      ...options,
+      [option]: !options[option],
+    }))
   }
 
   function handleKeyDown(event) {
@@ -56,9 +76,27 @@ function ViewSelector({ activeView, onViewChange }) {
               key={option.value}
               onClick={() => selectView(option.value)}
             >
-              {option.label}
+              <span>{option.label}</span>
+              <span className="view-selector__shortcut" aria-hidden="true">{option.shortcut}</span>
             </button>
           ))}
+          <div className="view-selector__settings">
+            {DISPLAY_OPTIONS.map((option) => (
+              <button
+                className="view-selector__setting"
+                type="button"
+                role="menuitemcheckbox"
+                aria-checked={displayOptions[option.value]}
+                key={option.value}
+                onClick={() => toggleDisplayOption(option.value)}
+              >
+                <span className="view-selector__checkmark" aria-hidden="true">
+                  {displayOptions[option.value] ? '✓' : ''}
+                </span>
+                <span>{option.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
