@@ -1,6 +1,7 @@
 import MonthView from '../calendar/MonthView.jsx'
 import WeekView from '../calendar/WeekView.jsx'
 import DayView from '../calendar/DayView.jsx'
+import mockEvents from '../../data/mockEvents.js'
 
 const VIEW_LABELS = {
   day: 'Day',
@@ -26,13 +27,15 @@ function CalendarPlaceholder({ activeView }) {
   )
 }
 
-function CalendarCanvas({ activeView, displayDate, displayMonth }) {
+function CalendarCanvas({ activeView, displayDate, displayMonth, visibleCalendars }) {
+  const events = mockEvents.filter((event) => visibleCalendars.includes(event.calendar))
+
   return (
     <main className="calendar-canvas" aria-label="Calendar workspace">
       <div className="calendar-canvas__surface">
-        {activeView === 'month' && <MonthView displayMonth={displayMonth} />}
-        {activeView === 'week' && <WeekView displayDate={displayDate} />}
-        {activeView === 'day' && <DayView displayDate={displayDate} />}
+        {activeView === 'month' && <MonthView displayMonth={displayMonth} events={events} />}
+        {activeView === 'week' && <WeekView displayDate={displayDate} events={events} />}
+        {activeView === 'day' && <DayView displayDate={displayDate} events={events} />}
         {activeView !== 'month' && activeView !== 'week' && activeView !== 'day' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>

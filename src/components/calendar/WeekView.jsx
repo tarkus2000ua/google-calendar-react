@@ -17,7 +17,7 @@ function formatHour(hour) {
   return `${hour % 12} ${hour < 12 ? 'AM' : 'PM'}`
 }
 
-function WeekView({ displayDate }) {
+function WeekView({ displayDate, events }) {
   const weekStart = getStartOfWeek(displayDate)
   const weekDates = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index))
   const [currentDate, setCurrentDate] = useState(() => new Date())
@@ -53,7 +53,9 @@ function WeekView({ displayDate }) {
         <div className="week-view__all-day-row">
           <div className="week-view__all-day-label">all-day</div>
           <div className="week-view__all-day-days">
-            {weekDates.map((date) => <TimeGridDayColumn area="all-day" currentDate={currentDate} date={date} key={date.toISOString()} />)}
+            {weekDates.map((date) => (
+              <TimeGridDayColumn area="all-day" currentDate={currentDate} date={date} events={events} key={date.toISOString()} />
+            ))}
           </div>
         </div>
 
@@ -68,6 +70,7 @@ function WeekView({ displayDate }) {
                   currentDate={currentDate}
                   currentTimeTop={currentTimeTop}
                   date={date}
+                  events={events}
                   key={date.toISOString()}
                 />
               ))}
