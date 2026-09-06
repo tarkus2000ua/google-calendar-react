@@ -16,11 +16,21 @@ function App() {
   }
 
   function showPreviousPeriod() {
-    setDisplayDate((date) => (activeView === 'week' ? addDays(date, -7) : addMonths(date, -1)))
+    setDisplayDate((date) => {
+      if (activeView === 'day') return addDays(date, -1)
+      if (activeView === 'week') return addDays(date, -7)
+
+      return addMonths(date, -1)
+    })
   }
 
   function showNextPeriod() {
-    setDisplayDate((date) => (activeView === 'week' ? addDays(date, 7) : addMonths(date, 1)))
+    setDisplayDate((date) => {
+      if (activeView === 'day') return addDays(date, 1)
+      if (activeView === 'week') return addDays(date, 7)
+
+      return addMonths(date, 1)
+    })
   }
 
   function showPreviousMonth() {
