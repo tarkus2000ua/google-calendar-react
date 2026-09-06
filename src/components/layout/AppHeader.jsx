@@ -1,8 +1,13 @@
-import { formatMonthYear } from '../../utils/dateHelpers.js'
+import { formatMonthYear, formatWeekRange } from '../../utils/dateHelpers.js'
 import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
-function AppHeader({ activeView, displayMonth, onViewChange, onToday, onPreviousMonth, onNextMonth }) {
+function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+  const isWeekView = activeView === 'week'
+  const periodLabel = isWeekView ? formatWeekRange(displayDate) : formatMonthYear(displayDate)
+  const previousLabel = `Previous ${isWeekView ? 'week' : 'month'}`
+  const nextLabel = `Next ${isWeekView ? 'week' : 'month'}`
+
   return (
     <header className="app-header">
       <div className="app-header__identity">
@@ -16,10 +21,10 @@ function AppHeader({ activeView, displayMonth, onViewChange, onToday, onPrevious
       <div className="app-header__navigation" aria-label="Calendar navigation">
         <button className="today-button" type="button" onClick={onToday}>Today</button>
         <div className="date-navigation">
-          <IconButton ariaLabel="Previous month" icon="chevron-left" onClick={onPreviousMonth} />
-          <IconButton ariaLabel="Next month" icon="chevron-right" onClick={onNextMonth} />
+          <IconButton ariaLabel={previousLabel} icon="chevron-left" onClick={onPreviousPeriod} />
+          <IconButton ariaLabel={nextLabel} icon="chevron-right" onClick={onNextPeriod} />
         </div>
-        <p className="current-period">{formatMonthYear(displayMonth)}</p>
+        <p className="current-period">{periodLabel}</p>
       </div>
 
       <ViewSelector activeView={activeView} onViewChange={onViewChange} />
