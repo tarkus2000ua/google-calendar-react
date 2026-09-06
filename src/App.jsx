@@ -8,6 +8,7 @@ import './App.css'
 function App() {
   const [displayMonth, setDisplayMonth] = useState(() => getStartOfMonth(new Date()))
   const [selectedDate, setSelectedDate] = useState(null)
+  const [activeView, setActiveView] = useState('month')
 
   function showToday() {
     setDisplayMonth(getStartOfMonth(new Date()))
@@ -29,7 +30,9 @@ function App() {
   return (
     <div className="calendar-app">
       <AppHeader
+        activeView={activeView}
         displayMonth={displayMonth}
+        onViewChange={setActiveView}
         onToday={showToday}
         onPreviousMonth={showPreviousMonth}
         onNextMonth={showNextMonth}
@@ -42,7 +45,7 @@ function App() {
           onNextMonth={showNextMonth}
           onSelectDate={selectDate}
         />
-        <CalendarCanvas displayMonth={displayMonth} />
+        <CalendarCanvas activeView={activeView} displayMonth={displayMonth} />
       </div>
     </div>
   )

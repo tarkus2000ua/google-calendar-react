@@ -1,7 +1,8 @@
 import { formatMonthYear } from '../../utils/dateHelpers.js'
+import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
-function AppHeader({ displayMonth, onToday, onPreviousMonth, onNextMonth }) {
+function AppHeader({ activeView, displayMonth, onViewChange, onToday, onPreviousMonth, onNextMonth }) {
   return (
     <header className="app-header">
       <div className="app-header__identity">
@@ -20,6 +21,8 @@ function AppHeader({ displayMonth, onToday, onPreviousMonth, onNextMonth }) {
         </div>
         <p className="current-period">{formatMonthYear(displayMonth)}</p>
       </div>
+
+      <ViewSelector activeView={activeView} onViewChange={onViewChange} />
 
       <div className="app-header__utilities">
         <IconButton ariaLabel="Search" icon="search" />
