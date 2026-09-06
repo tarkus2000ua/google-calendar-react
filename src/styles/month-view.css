@@ -10,6 +10,11 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
+.month-view--hide-weekends .month-view__weekdays,
+.month-view--hide-weekends .month-view__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 .month-view__weekdays {
   border-bottom: 1px solid var(--color-border);
 }
@@ -49,6 +54,14 @@
 }
 
 .month-view__day:nth-child(7n) {
+  border-right: 0;
+}
+
+.month-view--hide-weekends .month-view__day:nth-child(7n) {
+  border-right: 1px solid var(--color-border-subtle);
+}
+
+.month-view--hide-weekends .month-view__day:nth-child(5n) {
   border-right: 0;
 }
 

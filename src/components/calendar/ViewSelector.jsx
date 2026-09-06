@@ -11,18 +11,13 @@ const VIEW_OPTIONS = [
 ]
 
 const DISPLAY_OPTIONS = [
-  { value: 'weekends', label: 'Show weekends' },
-  { value: 'declined-events', label: 'Show declined events' },
-  { value: 'completed-tasks', label: 'Show completed tasks' },
+  { value: 'showWeekends', label: 'Show weekends' },
+  { value: 'showDeclinedEvents', label: 'Show declined events' },
+  { value: 'showCompletedTasks', label: 'Show completed tasks' },
 ]
 
-function ViewSelector({ activeView, onViewChange }) {
+function ViewSelector({ activeView, displayOptions, onDisplayOptionToggle, onViewChange }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [displayOptions, setDisplayOptions] = useState({
-    weekends: true,
-    'declined-events': true,
-    'completed-tasks': true,
-  })
   const buttonRef = useRef(null)
   const selectorRef = useRef(null)
   const activeOption = VIEW_OPTIONS.find((option) => option.value === activeView) ?? VIEW_OPTIONS[0]
@@ -56,10 +51,7 @@ function ViewSelector({ activeView, onViewChange }) {
   }
 
   function toggleDisplayOption(option) {
-    setDisplayOptions((options) => ({
-      ...options,
-      [option]: !options[option],
-    }))
+    onDisplayOptionToggle(option)
   }
 
   function handleKeyDown(event) {
