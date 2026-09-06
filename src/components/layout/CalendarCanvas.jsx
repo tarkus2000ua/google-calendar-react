@@ -1,5 +1,6 @@
 import MonthView from '../calendar/MonthView.jsx'
 import WeekView from '../calendar/WeekView.jsx'
+import FourDayView from '../calendar/FourDayView.jsx'
 import DayView from '../calendar/DayView.jsx'
 import AgendaView from '../calendar/AgendaView.jsx'
 
@@ -35,9 +36,10 @@ function CalendarCanvas({ activeView, displayDate, displayMonth, draftEvent, eve
       <div className="calendar-canvas__surface">
         {activeView === 'month' && <MonthView displayMonth={displayMonth} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectDate={onSelectDate} onSelectEvent={onSelectEvent} selectedDate={selectedDate} selectedEventChipId={selectedEventChipId} />}
         {activeView === 'week' && <WeekView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'four-days' && <FourDayView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
         {activeView === 'day' && <DayView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
         {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={visibleEvents} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
-        {activeView !== 'month' && activeView !== 'week' && activeView !== 'day' && activeView !== 'schedule' && <CalendarPlaceholder activeView={activeView} />}
+        {activeView !== 'month' && activeView !== 'week' && activeView !== 'four-days' && activeView !== 'day' && activeView !== 'schedule' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>
   )

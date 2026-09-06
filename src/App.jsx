@@ -49,6 +49,7 @@ function App() {
   function showPreviousPeriod() {
     setDisplayDate((date) => {
       if (activeView === 'day' || activeView === 'schedule') return addDays(date, -1)
+      if (activeView === 'four-days') return addDays(date, -4)
       if (activeView === 'week') return addDays(date, -7)
 
       return addMonths(date, -1)
@@ -58,6 +59,7 @@ function App() {
   function showNextPeriod() {
     setDisplayDate((date) => {
       if (activeView === 'day' || activeView === 'schedule') return addDays(date, 1)
+      if (activeView === 'four-days') return addDays(date, 4)
       if (activeView === 'week') return addDays(date, 7)
 
       return addMonths(date, 1)
@@ -101,7 +103,7 @@ function App() {
     setCreateEventType(type)
     setIsCreateEventDocked(false)
 
-    if (activeView === 'month' || activeView === 'week' || activeView === 'day') {
+    if (activeView === 'month' || activeView === 'week' || activeView === 'four-days' || activeView === 'day') {
       const draft = createDraftEvent(selectedDate ?? displayDate, {
         displayTime: true,
         reveal: activeView !== 'month',
