@@ -1,5 +1,6 @@
 import MonthView from '../calendar/MonthView.jsx'
 import WeekView from '../calendar/WeekView.jsx'
+import DayView from '../calendar/DayView.jsx'
 
 const VIEW_LABELS = {
   day: 'Day',
@@ -31,7 +32,8 @@ function CalendarCanvas({ activeView, displayDate, displayMonth }) {
       <div className="calendar-canvas__surface">
         {activeView === 'month' && <MonthView displayMonth={displayMonth} />}
         {activeView === 'week' && <WeekView displayDate={displayDate} />}
-        {activeView !== 'month' && activeView !== 'week' && <CalendarPlaceholder activeView={activeView} />}
+        {activeView === 'day' && <DayView displayDate={displayDate} />}
+        {activeView !== 'month' && activeView !== 'week' && activeView !== 'day' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>
   )

@@ -3,10 +3,19 @@ import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
 function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+  const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
-  const periodLabel = isWeekView ? formatWeekRange(displayDate) : formatMonthYear(displayDate)
-  const previousLabel = `Previous ${isWeekView ? 'week' : 'month'}`
-  const nextLabel = `Next ${isWeekView ? 'week' : 'month'}`
+  const periodLabel = isDayView
+    ? displayDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
+    : isWeekView ? formatWeekRange(displayDate) : formatMonthYear(displayDate)
+  const periodUnit = isDayView ? 'day' : isWeekView ? 'week' : 'month'
+  const previousLabel = `Previous ${periodUnit}`
+  const nextLabel = `Next ${periodUnit}`
 
   return (
     <header className="app-header">
