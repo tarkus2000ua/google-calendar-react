@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router'
 import AppHeader from './components/layout/AppHeader.jsx'
 import CalendarCanvas from './components/layout/CalendarCanvas.jsx'
 import CreateControl from './components/layout/CreateControl.jsx'
@@ -7,6 +8,7 @@ import EventDetailModal from './components/calendar/EventDetailModal.jsx'
 import CreateEventModal from './components/calendar/CreateEventModal.jsx'
 import YearDateModal from './components/calendar/YearDateModal.jsx'
 import mockEvents from './data/mockEvents.js'
+import { getTodayCalendarPath, parseCalendarRoute, toCalendarPath } from './utils/calendarRoutes.js'
 import { addDays, addMonths, getStartOfMonth } from './utils/dateHelpers.js'
 import './App.css'
 
@@ -33,8 +35,19 @@ function createDraftEvent(date, { displayTime, minutesFromDay, reveal }) {
   return { date: start, displayTime, end, reveal, start }
 }
 
-function App() {
-  const [displayDate, setDisplayDate] = useState(() => new Date())
+function CalendarRoute() {
+  const params = useParams()
+  const calendarRoute = parseCalendarRoute(params)
+
+  if (!calendarRoute) {
+    return <Navigate replace to={getTodayCalendarPath()} />
+  }
+
+  return <CalendarApp {...calendarRoute} />
+}
+
+function CalendarApp({ activeView, displayDate }) {
+  const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [eventTrigger, setEventTrigger] = useState(null)
@@ -48,7 +61,6 @@ function App() {
   const [createEventType, setCreateEventType] = useState('event')
   const [draftEvent, setDraftEvent] = useState(null)
   const [selectedDateTrigger, setSelectedDateTrigger] = useState(null)
-  const [activeView, setActiveView] = useState('month')
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [visibleCalendars, setVisibleCalendars] = useState(['Work', 'Personal', 'Holidays'])
   const [displayOptions, setDisplayOptions] = useState(DEFAULT_DISPLAY_OPTIONS)
@@ -62,44 +74,70 @@ function App() {
   function showToday() {
     const today = new Date()
 
-    setDisplayDate(today)
     setSelectedDate(today)
+    navigate(toCalendarPath(activeView, today))
   }
 
   function showPreviousPeriod() {
-    setDisplayDate((date) => {
-      if (activeView === 'day' || activeView === 'schedule') return addDays(date, -1)
-      if (activeView === 'four-days') return addDays(date, -4)
-      if (activeView === 'week') return addDays(date, -7)
-      if (activeView === 'year') return addMonths(date, -12)
+    if (activeView === 'day' || activeView === 'schedule') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, -1)))
+      return
+    }
 
-      return addMonths(date, -1)
-    })
+    if (activeView === 'four-days') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, -4)))
+      return
+    }
+
+    if (activeView === 'week') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, -7)))
+      return
+    }
+
+    if (activeView === 'year') {
+      navigate(toCalendarPath(activeView, addMonths(displayDate, -12)))
+      return
+    }
+
+    navigate(toCalendarPath(activeView, addMonths(displayDate, -1)))
   }
 
   function showNextPeriod() {
-    setDisplayDate((date) => {
-      if (activeView === 'day' || activeView === 'schedule') return addDays(date, 1)
-      if (activeView === 'four-days') return addDays(date, 4)
-      if (activeView === 'week') return addDays(date, 7)
-      if (activeView === 'year') return addMonths(date, 12)
+    if (activeView === 'day' || activeView === 'schedule') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, 1)))
+      return
+    }
 
-      return addMonths(date, 1)
-    })
+    if (activeView === 'four-days') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, 4)))
+      return
+    }
+
+    if (activeView === 'week') {
+      navigate(toCalendarPath(activeView, addDays(displayDate, 7)))
+      return
+    }
+
+    if (activeView === 'year') {
+      navigate(toCalendarPath(activeView, addMonths(displayDate, 12)))
+      return
+    }
+
+    navigate(toCalendarPath(activeView, addMonths(displayDate, 1)))
   }
 
   function showPreviousMonth() {
-    setDisplayDate((date) => addMonths(date, -1))
+    navigate(toCalendarPath(activeView, addMonths(displayDate, -1)))
   }
 
   function showNextMonth() {
-    setDisplayDate((date) => addMonths(date, 1))
+    navigate(toCalendarPath(activeView, addMonths(displayDate, 1)))
   }
 
   function selectDate(date, trigger = null) {
     setSelectedDate(date)
     setSelectedDateTrigger(trigger)
-    setDisplayDate(date)
+    navigate(toCalendarPath(activeView, date))
   }
 
   function selectYearDate(date, trigger) {
@@ -118,8 +156,11 @@ function App() {
 
   function openYearDateInDayView(date) {
     closeYearDateModal()
-    setDisplayDate(date)
-    setActiveView('day')
+    navigate(toCalendarPath('day', date))
+  }
+
+  function changeView(view) {
+    navigate(toCalendarPath(view, displayDate))
   }
 
   function toggleCalendar(calendarName) {
@@ -221,7 +262,7 @@ function App() {
           isSidebarCollapsed={isSidebarCollapsed}
           onDisplayOptionToggle={toggleDisplayOption}
           onSidebarToggle={() => setIsSidebarCollapsed((isCollapsed) => !isCollapsed)}
-          onViewChange={setActiveView}
+          onViewChange={changeView}
           onToday={showToday}
           onPreviousPeriod={showPreviousPeriod}
           onNextPeriod={showNextPeriod}
@@ -280,6 +321,15 @@ function App() {
         />
       )}
     </>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/calendar/:view/:year/:month/:day" element={<CalendarRoute />} />
+      <Route path="*" element={<Navigate replace to={getTodayCalendarPath()} />} />
+    </Routes>
   )
 }
 
