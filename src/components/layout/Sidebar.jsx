@@ -1,3 +1,5 @@
+import SidebarSection from './SidebarSection.jsx'
+
 function Sidebar() {
   return (
     <aside className="sidebar" aria-label="Calendar sidebar">
@@ -8,15 +10,13 @@ function Sidebar() {
         Create
       </button>
 
-      <section className="sidebar-section" aria-labelledby="mini-calendar-heading">
-        <h2 id="mini-calendar-heading">Mini calendar</h2>
+      <SidebarSection heading="Mini calendar" headingId="mini-calendar-heading">
         <div className="sidebar-placeholder sidebar-placeholder--calendar" aria-hidden="true" />
-      </section>
+      </SidebarSection>
 
-      <section className="sidebar-section" aria-labelledby="my-calendars-heading">
-        <h2 id="my-calendars-heading">My calendars</h2>
+      <SidebarSection heading="My calendars" headingId="my-calendars-heading">
         <div className="sidebar-placeholder sidebar-placeholder--list" aria-hidden="true" />
-      </section>
+      </SidebarSection>
     </aside>
   )
 }

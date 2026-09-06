@@ -1,22 +1,15 @@
 import mockEvents from '../../data/mockEvents.js'
+import EventChip from './EventChip.jsx'
 import {
   compareDates,
   formatMonthYear,
   getMonthGridDates,
   isDateInRange,
   isSameMonth,
-  parseLocalDate,
 } from '../../utils/dateHelpers.js'
 import '../../styles/month-view.css'
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-function formatEventTime(value) {
-  return new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-  }).format(parseLocalDate(value))
-}
 
 function MonthView({ displayMonth }) {
   const gridDates = getMonthGridDates(displayMonth)
@@ -56,14 +49,7 @@ function MonthView({ displayMonth }) {
               <div className="month-view__date-number">{date.getDate()}</div>
               <div className="month-view__events">
                 {eventsForDate.map((event) => (
-                  <div
-                    className={`month-view__event month-view__event--${event.color}${isPastDate ? ' month-view__event--past' : ''}`}
-                    key={event.id}
-                    title={event.title}
-                  >
-                    {!event.allDay && <span className="month-view__event-time">{formatEventTime(event.start)}</span>}
-                    <span className="month-view__event-title">{event.title}</span>
-                  </div>
+                  <EventChip event={event} isPast={isPastDate} key={event.id} />
                 ))}
               </div>
             </div>
