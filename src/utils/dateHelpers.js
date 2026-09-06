@@ -128,11 +128,23 @@ function formatMonthYear(value, locale = 'en-US') {
   }).format(parseLocalDate(value))
 }
 
+function formatWeekRange(value, locale = 'en-US') {
+  const weekStart = getStartOfWeek(value)
+  const weekEnd = getEndOfWeek(value)
+
+  return new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).formatRange(weekStart, weekEnd)
+}
+
 export {
   addDays,
   addMonths,
   compareDates,
   formatMonthYear,
+  formatWeekRange,
   getEndOfMonth,
   getEndOfWeek,
   getMonthGridDates,

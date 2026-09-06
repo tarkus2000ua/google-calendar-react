@@ -1,4 +1,5 @@
 import MonthView from '../calendar/MonthView.jsx'
+import WeekView from '../calendar/WeekView.jsx'
 
 const VIEW_LABELS = {
   day: 'Day',
@@ -24,11 +25,13 @@ function CalendarPlaceholder({ activeView }) {
   )
 }
 
-function CalendarCanvas({ activeView, displayMonth }) {
+function CalendarCanvas({ activeView, displayDate, displayMonth }) {
   return (
     <main className="calendar-canvas" aria-label="Calendar workspace">
       <div className="calendar-canvas__surface">
-        {activeView === 'month' ? <MonthView displayMonth={displayMonth} /> : <CalendarPlaceholder activeView={activeView} />}
+        {activeView === 'month' && <MonthView displayMonth={displayMonth} />}
+        {activeView === 'week' && <WeekView displayDate={displayDate} />}
+        {activeView !== 'month' && activeView !== 'week' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>
   )

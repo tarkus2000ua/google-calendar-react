@@ -2,40 +2,49 @@ import { useState } from 'react'
 import AppHeader from './components/layout/AppHeader.jsx'
 import CalendarCanvas from './components/layout/CalendarCanvas.jsx'
 import Sidebar from './components/layout/Sidebar.jsx'
-import { addMonths, getStartOfMonth } from './utils/dateHelpers.js'
+import { addDays, addMonths, getStartOfMonth } from './utils/dateHelpers.js'
 import './App.css'
 
 function App() {
-  const [displayMonth, setDisplayMonth] = useState(() => getStartOfMonth(new Date()))
+  const [displayDate, setDisplayDate] = useState(() => new Date())
   const [selectedDate, setSelectedDate] = useState(null)
   const [activeView, setActiveView] = useState('month')
+  const displayMonth = getStartOfMonth(displayDate)
 
   function showToday() {
-    setDisplayMonth(getStartOfMonth(new Date()))
+    setDisplayDate(new Date())
+  }
+
+  function showPreviousPeriod() {
+    setDisplayDate((date) => (activeView === 'week' ? addDays(date, -7) : addMonths(date, -1)))
+  }
+
+  function showNextPeriod() {
+    setDisplayDate((date) => (activeView === 'week' ? addDays(date, 7) : addMonths(date, 1)))
   }
 
   function showPreviousMonth() {
-    setDisplayMonth((month) => addMonths(month, -1))
+    setDisplayDate((date) => addMonths(date, -1))
   }
 
   function showNextMonth() {
-    setDisplayMonth((month) => addMonths(month, 1))
+    setDisplayDate((date) => addMonths(date, 1))
   }
 
   function selectDate(date) {
     setSelectedDate(date)
-    setDisplayMonth(getStartOfMonth(date))
+    setDisplayDate(date)
   }
 
   return (
     <div className="calendar-app">
       <AppHeader
         activeView={activeView}
-        displayMonth={displayMonth}
+        displayDate={displayDate}
         onViewChange={setActiveView}
         onToday={showToday}
-        onPreviousMonth={showPreviousMonth}
-        onNextMonth={showNextMonth}
+        onPreviousPeriod={showPreviousPeriod}
+        onNextPeriod={showNextPeriod}
       />
       <div className="calendar-app__body">
         <Sidebar
@@ -45,7 +54,7 @@ function App() {
           onNextMonth={showNextMonth}
           onSelectDate={selectDate}
         />
-        <CalendarCanvas activeView={activeView} displayMonth={displayMonth} />
+        <CalendarCanvas activeView={activeView} displayDate={displayDate} displayMonth={displayMonth} />
       </div>
     </div>
   )
