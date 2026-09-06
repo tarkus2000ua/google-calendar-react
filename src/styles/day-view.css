@@ -129,3 +129,22 @@
     min-width: 360px;
   }
 }
+
+.day-view__scroll {
+  scrollbar-color: #bdc1c6 transparent;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 620px) {
+  .day-view {
+    --day-view-scrollbar-gutter: 12px;
+  }
+
+  .day-view__content {
+    min-width: 320px;
+  }
+
+  .day-view__day-header {
+    padding-left: 8px;
+  }
+}

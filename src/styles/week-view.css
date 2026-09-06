@@ -291,3 +291,43 @@
     min-width: 740px;
   }
 }
+
+.week-view__scroll {
+  scrollbar-color: #bdc1c6 transparent;
+  scrollbar-width: thin;
+}
+
+.week-view__day-column:focus-visible {
+  z-index: 2;
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.week-view__day-column:hover {
+  background-color: #fafcff;
+}
+
+.week-view__all-day-event,
+.week-view__timed-event {
+  transition: filter 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+@media (max-width: 620px) {
+  .week-view {
+    --week-view-scrollbar-gutter: 12px;
+  }
+
+  .week-view__content {
+    min-width: 700px;
+  }
+
+  .week-view__day-headers {
+    min-height: 60px;
+  }
+
+  .week-view__date {
+    width: 30px;
+    height: 30px;
+    font-size: 19px;
+  }
+}

@@ -17,6 +17,8 @@
   border-radius: 28px;
   background: #f1f3f4;
   box-shadow: 0 2px 5px rgba(60, 64, 67, 0.24), 0 8px 18px rgba(60, 64, 67, 0.2);
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
 }
 
 .create-event-modal--docked {
@@ -392,6 +394,10 @@
   background: #d3e3fd;
 }
 
+.create-event-modal__save:active {
+  background: #c2dbff;
+}
+
 .create-event-modal__close:focus-visible,
 .create-event-modal__dock:focus-visible,
 .create-event-modal__cancel:focus-visible,
@@ -455,5 +461,38 @@
   .create-event-modal__calendar-row,
   .create-event-modal__error {
     margin-left: 36px;
+  }
+}
+
+@media (max-width: 420px) {
+  .create-event-modal__header {
+    min-height: 48px;
+    padding: 8px 12px 0 16px;
+  }
+
+  .create-event-modal__form {
+    gap: 14px;
+    padding: 0 16px 14px;
+  }
+
+  .create-event-modal__field input {
+    font-size: 20px;
+  }
+
+  .create-event-modal__date-row,
+  .create-event-modal__schedule-summary {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .create-event-modal__schedule-options,
+  .create-event-modal__repeat,
+  .create-event-modal__calendar-row,
+  .create-event-modal__error {
+    margin-left: 28px;
+  }
+
+  .create-event-modal__schedule-options {
+    gap: 16px;
   }
 }

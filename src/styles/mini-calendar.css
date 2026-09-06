@@ -115,3 +115,11 @@
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+
+.mini-calendar__date {
+  transition: background-color 120ms ease, box-shadow 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.mini-calendar__date:active {
+  background: var(--color-state-pressed);
+}

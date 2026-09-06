@@ -190,3 +190,36 @@
     display: none;
   }
 }
+
+.month-view__day {
+  transition: background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.month-view__day:hover {
+  background: var(--color-surface-subtle);
+}
+
+.month-view__day--selected,
+.month-view__day--selected:hover {
+  background: var(--color-selected-surface);
+}
+
+.month-view__event {
+  transition: filter 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+@media (max-width: 620px) {
+  .month-view__grid {
+    grid-auto-rows: minmax(76px, 1fr);
+  }
+
+  .month-view__date-number {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 3px;
+  }
+
+  .month-view__events {
+    gap: 2px;
+  }
+}

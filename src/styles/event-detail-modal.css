@@ -181,9 +181,32 @@
 @media (max-width: 620px) {
   .event-detail-modal {
     width: min(calc(100vw - 24px), 500px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
   }
 
   .event-detail-modal__content {
     padding: 2px 24px 26px;
+  }
+}
+
+.event-detail-modal__close:active {
+  background: var(--color-state-pressed);
+}
+
+@media (max-width: 420px) {
+  .event-detail-modal__header {
+    min-height: 50px;
+    padding: 8px 8px 0;
+  }
+
+  .event-detail-modal__content {
+    grid-template-columns: 16px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 2px 18px 22px;
+  }
+
+  .event-detail-modal__title {
+    font-size: 20px;
   }
 }

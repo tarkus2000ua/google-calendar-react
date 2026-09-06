@@ -617,3 +617,147 @@
     padding: 24px;
   }
 }
+
+/* Step 17: shared interaction and responsive refinements. */
+.app-header {
+  min-height: var(--header-height);
+}
+
+.calendar-app__body {
+  min-height: calc(100vh - var(--header-height));
+}
+
+.view-selector__button:hover,
+.icon-button:hover,
+.today-button:hover,
+.calendar-list__item:hover {
+  background: var(--color-state-hover);
+}
+
+.view-selector__button[aria-expanded='true'] {
+  border-color: var(--color-primary);
+  background: var(--color-state-pressed);
+  color: var(--color-primary-hover);
+}
+
+.view-selector__menu,
+.create-menu {
+  box-shadow: var(--shadow-raised);
+}
+
+.view-selector__option:hover,
+.view-selector__option:focus-visible,
+.view-selector__setting:hover,
+.view-selector__setting:focus-visible,
+.create-menu__item:hover,
+.create-menu__item:focus-visible {
+  background: var(--color-state-hover);
+}
+
+.view-selector__option[aria-checked='true'] {
+  background: var(--color-primary-container);
+  color: #174ea6;
+}
+
+.view-selector__setting[aria-checked='true'] {
+  color: #174ea6;
+}
+
+.icon-button:active,
+.today-button:active,
+.account-button:active,
+.calendar-list__item:active {
+  background: var(--color-state-pressed);
+}
+
+.account-button:hover {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.68);
+}
+
+.create-button:active {
+  background: var(--color-state-pressed);
+  box-shadow: var(--shadow-control);
+}
+
+.calendar-list__item[aria-pressed='true'] {
+  font-weight: 500;
+}
+
+.calendar-canvas__surface {
+  isolation: isolate;
+}
+
+@media (max-width: 900px) {
+  .view-selector {
+    margin-left: auto;
+  }
+
+  .sidebar {
+    grid-template-columns: minmax(152px, 0.8fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .app-header__identity {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .app-header__utilities {
+    gap: 0;
+  }
+
+  .app-header__utilities .account-button {
+    margin-left: 0;
+  }
+
+  .view-selector {
+    margin-left: 0;
+  }
+
+  .view-selector__button {
+    min-height: 36px;
+    padding: 0 10px 0 14px;
+  }
+
+  .view-selector__menu {
+    position: fixed;
+    top: calc(var(--header-height) + 4px);
+    right: 8px;
+    left: 8px;
+    min-width: 0;
+    max-height: calc(100dvh - var(--header-height) - 12px);
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    gap: 16px;
+  }
+
+  .calendar-canvas {
+    padding: 12px 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-header {
+    gap: 6px 8px;
+  }
+
+  .today-button {
+    padding: 0 10px;
+  }
+
+  .date-navigation .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .current-period {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -158,3 +158,17 @@
   color: var(--color-text);
   font-size: 13px;
 }
+
+.year-date-modal {
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+}
+
+.year-date-modal__event {
+  transition: filter 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.year-date-modal__close:active,
+.year-date-modal__date-button:active .year-date-modal__date {
+  background: var(--color-state-pressed);
+}

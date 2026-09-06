@@ -136,6 +136,11 @@
   .year-view {
     min-height: 60vh;
   }
+
+  .year-view__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px 22px;
+  }
 }
 
 @media (max-width: 620px) {
@@ -165,5 +170,21 @@
   .year-view__day {
     width: 24px;
     height: 24px;
+  }
+}
+
+.year-view__day {
+  transition: background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+@media (max-width: 420px) {
+  .year-view {
+    padding: 18px 12px;
+  }
+
+  .year-view__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    max-width: 260px;
   }
 }
