@@ -178,10 +178,6 @@
   background: var(--color-surface-subtle);
 }
 
-.sidebar-placeholder--calendar {
-  height: 176px;
-}
-
 .sidebar-placeholder--list {
   height: 96px;
 }

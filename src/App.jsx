@@ -7,6 +7,7 @@ import './App.css'
 
 function App() {
   const [displayMonth, setDisplayMonth] = useState(() => getStartOfMonth(new Date()))
+  const [selectedDate, setSelectedDate] = useState(null)
 
   function showToday() {
     setDisplayMonth(getStartOfMonth(new Date()))
@@ -20,6 +21,11 @@ function App() {
     setDisplayMonth((month) => addMonths(month, 1))
   }
 
+  function selectDate(date) {
+    setSelectedDate(date)
+    setDisplayMonth(getStartOfMonth(date))
+  }
+
   return (
     <div className="calendar-app">
       <AppHeader
@@ -29,7 +35,13 @@ function App() {
         onNextMonth={showNextMonth}
       />
       <div className="calendar-app__body">
-        <Sidebar />
+        <Sidebar
+          displayMonth={displayMonth}
+          selectedDate={selectedDate}
+          onPreviousMonth={showPreviousMonth}
+          onNextMonth={showNextMonth}
+          onSelectDate={selectDate}
+        />
         <CalendarCanvas displayMonth={displayMonth} />
       </div>
     </div>

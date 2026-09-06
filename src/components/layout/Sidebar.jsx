@@ -1,6 +1,7 @@
 import SidebarSection from './SidebarSection.jsx'
+import MiniCalendar from '../calendar/MiniCalendar.jsx'
 
-function Sidebar() {
+function Sidebar({ displayMonth, selectedDate, onPreviousMonth, onNextMonth, onSelectDate }) {
   return (
     <aside className="sidebar" aria-label="Calendar sidebar">
       <button className="create-button" type="button">
@@ -10,9 +11,15 @@ function Sidebar() {
         Create
       </button>
 
-      <SidebarSection heading="Mini calendar" headingId="mini-calendar-heading">
-        <div className="sidebar-placeholder sidebar-placeholder--calendar" aria-hidden="true" />
-      </SidebarSection>
+      <section className="sidebar-section" aria-label="Mini calendar">
+        <MiniCalendar
+          displayMonth={displayMonth}
+          selectedDate={selectedDate}
+          onPreviousMonth={onPreviousMonth}
+          onNextMonth={onNextMonth}
+          onSelectDate={onSelectDate}
+        />
+      </section>
 
       <SidebarSection heading="My calendars" headingId="my-calendars-heading">
         <div className="sidebar-placeholder sidebar-placeholder--list" aria-hidden="true" />
