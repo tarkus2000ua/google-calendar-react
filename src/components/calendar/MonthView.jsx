@@ -1,14 +1,14 @@
 import mockEvents from '../../data/mockEvents.js'
 import {
+  compareDates,
+  formatMonthYear,
   getMonthGridDates,
   isDateInRange,
   isSameMonth,
-  isToday,
   parseLocalDate,
 } from '../../utils/dateHelpers.js'
 import '../../styles/month-view.css'
 
-const DISPLAY_MONTH = new Date(2026, 8, 1)
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function formatEventTime(value) {
@@ -18,11 +18,13 @@ function formatEventTime(value) {
   }).format(parseLocalDate(value))
 }
 
-function MonthView() {
-  const gridDates = getMonthGridDates(DISPLAY_MONTH)
+function MonthView({ displayMonth }) {
+  const gridDates = getMonthGridDates(displayMonth)
+  const monthLabel = formatMonthYear(displayMonth)
+  const currentDate = new Date()
 
   return (
-    <section className="month-view" aria-label="September 2026">
+    <section className="month-view" aria-label={monthLabel}>
       <div className="month-view__weekdays" role="row">
         {WEEKDAY_LABELS.map((weekday) => (
           <div className="month-view__weekday" role="columnheader" key={weekday}>
@@ -31,11 +33,13 @@ function MonthView() {
         ))}
       </div>
 
-      <div className="month-view__grid" role="grid" aria-label="September 2026 calendar">
+      <div className="month-view__grid" role="grid" aria-label={`${monthLabel} calendar`}>
         {gridDates.map((date) => {
           const eventsForDate = mockEvents.filter((event) => isDateInRange(date, event.start, event.end))
-          const isCurrentMonth = isSameMonth(date, DISPLAY_MONTH)
-          const today = isToday(date)
+          const isCurrentMonth = isSameMonth(date, displayMonth)
+          const dayComparison = compareDates(date, currentDate)
+          const today = dayComparison === 0
+          const isPastDate = dayComparison < 0
 
           return (
             <div
@@ -53,7 +57,7 @@ function MonthView() {
               <div className="month-view__events">
                 {eventsForDate.map((event) => (
                   <div
-                    className={`month-view__event month-view__event--${event.color}`}
+                    className={`month-view__event month-view__event--${event.color}${isPastDate ? ' month-view__event--past' : ''}`}
                     key={event.id}
                     title={event.title}
                   >

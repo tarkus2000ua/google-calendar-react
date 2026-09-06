@@ -1,4 +1,6 @@
-function AppHeader() {
+import { formatMonthYear } from '../../utils/dateHelpers.js'
+
+function AppHeader({ displayMonth, onToday, onPreviousMonth, onNextMonth }) {
   return (
     <header className="app-header">
       <div className="app-header__identity">
@@ -14,20 +16,20 @@ function AppHeader() {
       </div>
 
       <div className="app-header__navigation" aria-label="Calendar navigation">
-        <button className="today-button" type="button">Today</button>
+        <button className="today-button" type="button" onClick={onToday}>Today</button>
         <div className="date-navigation">
-          <button className="icon-button" type="button" aria-label="Previous period">
+          <button className="icon-button" type="button" aria-label="Previous month" onClick={onPreviousMonth}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m14.5 5-7 7 7 7" />
             </svg>
           </button>
-          <button className="icon-button" type="button" aria-label="Next period">
+          <button className="icon-button" type="button" aria-label="Next month" onClick={onNextMonth}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m9.5 5 7 7-7 7" />
             </svg>
           </button>
         </div>
-        <p className="current-period">September 2026</p>
+        <p className="current-period">{formatMonthYear(displayMonth)}</p>
       </div>
 
       <div className="app-header__utilities">

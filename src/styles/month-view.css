@@ -78,6 +78,10 @@
   white-space: nowrap;
 }
 
+.month-view__event--past {
+  opacity: 0.55;
+}
+
 .month-view__event-time,
 .month-view__event-title {
   overflow: hidden;
