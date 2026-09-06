@@ -55,7 +55,7 @@ function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, 
     if (!draftSegment || !draftChipRef.current) return
 
     if (draftEvent.reveal) {
-      const scrollContainer = draftChipRef.current.closest('.week-view__scroll, .day-view__scroll')
+      const scrollContainer = draftChipRef.current.closest('.week-view__scroll, .four-day-view__scroll, .day-view__scroll')
       if (scrollContainer) {
         scrollContainer.scrollTop = Math.max(0, draftSegment.top - 160)
       }

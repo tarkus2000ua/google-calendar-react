@@ -11,6 +11,7 @@ import IconButton from '../ui/IconButton.jsx'
 function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
   const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
+  const isFourDayView = activeView === 'four-days'
   const isScheduleView = activeView === 'schedule'
   const periodLabel = isDayView
     ? displayDate.toLocaleDateString('en-US', {
@@ -21,10 +22,12 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
     })
     : isWeekView
       ? formatWeekRange(displayDate)
+      : isFourDayView
+        ? formatFourDayRange(displayDate)
       : isScheduleView
         ? formatScheduleRange(displayDate)
         : formatMonthYear(displayDate)
-  const periodUnit = isDayView || isScheduleView ? 'day' : isWeekView ? 'week' : 'month'
+  const periodUnit = isDayView || isScheduleView ? 'day' : isWeekView ? 'week' : isFourDayView ? '4 days' : 'month'
   const previousLabel = `Previous ${periodUnit}`
   const nextLabel = `Next ${periodUnit}`
 
@@ -64,6 +67,17 @@ function formatScheduleRange(value) {
   const rangeEnd = addDays(addMonths(rangeStart, 6), -1)
 
   return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    year: 'numeric',
+  }).formatRange(rangeStart, rangeEnd)
+}
+
+function formatFourDayRange(value) {
+  const rangeStart = startOfDay(value)
+  const rangeEnd = addDays(rangeStart, 3)
+
+  return new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
     month: 'short',
     year: 'numeric',
   }).formatRange(rangeStart, rangeEnd)
