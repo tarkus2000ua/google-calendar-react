@@ -28,16 +28,16 @@ function CalendarPlaceholder({ activeView }) {
   )
 }
 
-function CalendarCanvas({ activeView, displayDate, displayMonth, visibleCalendars }) {
+function CalendarCanvas({ activeView, displayDate, displayMonth, onSelectEvent, selectedEventChipId, visibleCalendars }) {
   const events = mockEvents.filter((event) => visibleCalendars.includes(event.calendar))
 
   return (
     <main className="calendar-canvas" aria-label="Calendar workspace">
       <div className="calendar-canvas__surface">
-        {activeView === 'month' && <MonthView displayMonth={displayMonth} events={events} />}
-        {activeView === 'week' && <WeekView displayDate={displayDate} events={events} />}
-        {activeView === 'day' && <DayView displayDate={displayDate} events={events} />}
-        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={events} />}
+        {activeView === 'month' && <MonthView displayMonth={displayMonth} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'week' && <WeekView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'day' && <DayView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
         {activeView !== 'month' && activeView !== 'week' && activeView !== 'day' && activeView !== 'schedule' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>

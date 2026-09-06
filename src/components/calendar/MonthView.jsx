@@ -5,12 +5,13 @@ import {
   getMonthGridDates,
   isDateInRange,
   isSameMonth,
+  toDateKey,
 } from '../../utils/dateHelpers.js'
 import '../../styles/month-view.css'
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-function MonthView({ displayMonth, events }) {
+function MonthView({ displayMonth, events, onSelectEvent, selectedEventChipId }) {
   const gridDates = getMonthGridDates(displayMonth)
   const monthLabel = formatMonthYear(displayMonth)
   const currentDate = new Date()
@@ -48,7 +49,14 @@ function MonthView({ displayMonth, events }) {
               <div className="month-view__date-number">{date.getDate()}</div>
               <div className="month-view__events">
                 {eventsForDate.map((event) => (
-                  <EventChip event={event} isPast={isPastDate} key={event.id} />
+                  <EventChip
+                    event={event}
+                    eventChipId={`${event.id}-${toDateKey(date)}`}
+                    isPast={isPastDate}
+                    isSelected={selectedEventChipId === `${event.id}-${toDateKey(date)}`}
+                    key={event.id}
+                    onSelectEvent={onSelectEvent}
+                  />
                 ))}
               </div>
             </div>
