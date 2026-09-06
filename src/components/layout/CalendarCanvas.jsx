@@ -29,18 +29,16 @@ function CalendarPlaceholder({ activeView }) {
   )
 }
 
-function CalendarCanvas({ activeView, displayDate, displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, onSelectTime, onSelectYearDate, selectedDate, selectedEventChipId, visibleCalendars }) {
-  const visibleEvents = events.filter((event) => visibleCalendars.includes(event.calendar))
-
+function CalendarCanvas({ activeView, displayDate, displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, onSelectTime, onSelectYearDate, selectedDate, selectedEventChipId, showWeekends }) {
   return (
     <main className="calendar-canvas" aria-label="Calendar workspace">
       <div className="calendar-canvas__surface">
-        {activeView === 'month' && <MonthView displayMonth={displayMonth} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectDate={onSelectDate} onSelectEvent={onSelectEvent} selectedDate={selectedDate} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'week' && <WeekView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'four-days' && <FourDayView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'day' && <DayView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={visibleEvents} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'year' && <YearView displayDate={displayDate} events={visibleEvents} onSelectDate={onSelectYearDate} selectedDate={selectedDate} />}
+        {activeView === 'month' && <MonthView displayMonth={displayMonth} draftEvent={draftEvent} events={events} onDraftAnchor={onDraftAnchor} onSelectDate={onSelectDate} onSelectEvent={onSelectEvent} selectedDate={selectedDate} selectedEventChipId={selectedEventChipId} showWeekends={showWeekends} />}
+        {activeView === 'week' && <WeekView displayDate={displayDate} draftEvent={draftEvent} events={events} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} showWeekends={showWeekends} />}
+        {activeView === 'four-days' && <FourDayView displayDate={displayDate} draftEvent={draftEvent} events={events} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'day' && <DayView displayDate={displayDate} draftEvent={draftEvent} events={events} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'year' && <YearView displayDate={displayDate} events={events} onSelectDate={onSelectYearDate} selectedDate={selectedDate} />}
         {activeView !== 'month' && activeView !== 'week' && activeView !== 'four-days' && activeView !== 'day' && activeView !== 'schedule' && activeView !== 'year' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>

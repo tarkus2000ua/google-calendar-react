@@ -3,6 +3,7 @@ import {
   addDays,
   getStartOfWeek,
   isSameDay,
+  isWeekend,
 } from '../../utils/dateHelpers.js'
 import TimeGridDayColumn from './TimeGridDayColumn.jsx'
 import '../../styles/week-view.css'
@@ -17,9 +18,10 @@ function formatHour(hour) {
   return `${hour % 12} ${hour < 12 ? 'AM' : 'PM'}`
 }
 
-function WeekView({ displayDate, draftEvent, events, onDraftAnchor, onSelectEvent, onSelectTime, selectedEventChipId }) {
+function WeekView({ displayDate, draftEvent, events, onDraftAnchor, onSelectEvent, onSelectTime, selectedEventChipId, showWeekends }) {
   const weekStart = getStartOfWeek(displayDate)
   const weekDates = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index))
+    .filter((date) => showWeekends || !isWeekend(date))
   const [currentDate, setCurrentDate] = useState(() => new Date())
   const currentTimeTop = (currentDate.getHours() + (currentDate.getMinutes() / 60)) * HOUR_HEIGHT
 
@@ -30,7 +32,7 @@ function WeekView({ displayDate, draftEvent, events, onDraftAnchor, onSelectEven
   }, [])
 
   return (
-    <section className="week-view" aria-label="Weekly calendar">
+    <section className={`week-view${showWeekends ? '' : ' week-view--hide-weekends'}`} aria-label="Weekly calendar">
       <div className="week-view__content">
         <div className="week-view__day-headers" role="row">
           <div className="week-view__time-gutter week-view__time-gutter--header" aria-hidden="true" />

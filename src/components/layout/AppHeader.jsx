@@ -8,7 +8,7 @@ import {
 import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
-function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+function AppHeader({ activeView, displayDate, displayOptions, onDisplayOptionToggle, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
   const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
   const isFourDayView = activeView === 'four-days'
@@ -53,7 +53,7 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
         <p className="current-period">{periodLabel}</p>
       </div>
 
-      <ViewSelector activeView={activeView} onViewChange={onViewChange} />
+      <ViewSelector activeView={activeView} displayOptions={displayOptions} onDisplayOptionToggle={onDisplayOptionToggle} onViewChange={onViewChange} />
 
       <div className="app-header__utilities">
         <IconButton ariaLabel="Search" icon="search" />

@@ -66,6 +66,12 @@ function isSameMonth(left, right) {
     && leftDate.getMonth() === rightDate.getMonth()
 }
 
+function isWeekend(value) {
+  const day = parseLocalDate(value).getDay()
+
+  return day === 0 || day === 6
+}
+
 function addDays(value, amount) {
   const date = parseLocalDate(value)
   date.setDate(date.getDate() + amount)
@@ -154,6 +160,7 @@ export {
   isSameDay,
   isSameMonth,
   isToday,
+  isWeekend,
   parseLocalDate,
   startOfDay,
   toDateKey,

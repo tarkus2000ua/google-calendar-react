@@ -5,6 +5,7 @@ import {
   formatMonthYear,
   getMonthGridDates,
   isDateInRange,
+  isWeekend,
   isSameDay,
   isSameMonth,
   toDateKey,
@@ -21,8 +22,8 @@ function formatDraftTime(value) {
   }).format(value)
 }
 
-function MonthView({ displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, selectedDate, selectedEventChipId }) {
-  const gridDates = getMonthGridDates(displayMonth)
+function MonthView({ displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, selectedDate, selectedEventChipId, showWeekends }) {
+  const gridDates = getMonthGridDates(displayMonth).filter((date) => showWeekends || !isWeekend(date))
   const monthLabel = formatMonthYear(displayMonth)
   const currentDate = new Date()
   const draftChipRef = useRef(null)
@@ -34,9 +35,9 @@ function MonthView({ displayMonth, draftEvent, events, onDraftAnchor, onSelectDa
   }, [draftEvent, onDraftAnchor])
 
   return (
-    <section className="month-view" aria-label={monthLabel}>
+    <section className={`month-view${showWeekends ? '' : ' month-view--hide-weekends'}`} aria-label={monthLabel}>
       <div className="month-view__weekdays" role="row">
-        {WEEKDAY_LABELS.map((weekday) => (
+        {WEEKDAY_LABELS.filter((_, index) => showWeekends || (index !== 0 && index !== 6)).map((weekday) => (
           <div className="month-view__weekday" role="columnheader" key={weekday}>
             {weekday}
           </div>

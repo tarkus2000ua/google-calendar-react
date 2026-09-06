@@ -9,6 +9,12 @@ import mockEvents from './data/mockEvents.js'
 import { addDays, addMonths, getStartOfMonth } from './utils/dateHelpers.js'
 import './App.css'
 
+const DEFAULT_DISPLAY_OPTIONS = {
+  showCompletedTasks: true,
+  showDeclinedEvents: true,
+  showWeekends: true,
+}
+
 function createDraftEvent(date, { displayTime, minutesFromDay, reveal }) {
   const start = new Date(date)
 
@@ -43,7 +49,13 @@ function App() {
   const [selectedDateTrigger, setSelectedDateTrigger] = useState(null)
   const [activeView, setActiveView] = useState('month')
   const [visibleCalendars, setVisibleCalendars] = useState(['Work', 'Personal', 'Holidays'])
+  const [displayOptions, setDisplayOptions] = useState(DEFAULT_DISPLAY_OPTIONS)
   const displayMonth = getStartOfMonth(displayDate)
+  const visibleEvents = events.filter((event) => (
+    visibleCalendars.includes(event.calendar)
+    && (displayOptions.showDeclinedEvents || event.status !== 'declined')
+    && (displayOptions.showCompletedTasks || event.type !== 'task' || event.status !== 'completed')
+  ))
 
   function showToday() {
     setDisplayDate(new Date())
@@ -111,6 +123,13 @@ function App() {
         ? calendars.filter((calendar) => calendar !== calendarName)
         : [...calendars, calendarName]
     ))
+  }
+
+  function toggleDisplayOption(option) {
+    setDisplayOptions((options) => ({
+      ...options,
+      [option]: !options[option],
+    }))
   }
 
   function showEventDetails(event, trigger, eventChipId) {
@@ -192,7 +211,9 @@ function App() {
       <div className={`calendar-app${isCreateEventDocked ? ' calendar-app--composer-docked' : ''}`}>
         <AppHeader
           activeView={activeView}
+          displayOptions={displayOptions}
           displayDate={displayDate}
+          onDisplayOptionToggle={toggleDisplayOption}
           onViewChange={setActiveView}
           onToday={showToday}
           onPreviousPeriod={showPreviousPeriod}
@@ -213,7 +234,7 @@ function App() {
             activeView={activeView}
             displayDate={displayDate}
             displayMonth={displayMonth}
-            events={events}
+            events={visibleEvents}
             onSelectDate={openCreateAtDate}
             onSelectYearDate={selectYearDate}
             onSelectTime={openCreateAtTime}
@@ -222,7 +243,7 @@ function App() {
             draftEvent={draftEvent}
             selectedDate={selectedDate}
             selectedEventChipId={selectedEventChipId}
-            visibleCalendars={visibleCalendars}
+            showWeekends={displayOptions.showWeekends}
           />
         </div>
       </div>
@@ -230,7 +251,7 @@ function App() {
       {selectedYearDate && (
         <YearDateModal
           date={selectedYearDate}
-          events={events.filter((event) => visibleCalendars.includes(event.calendar))}
+          events={visibleEvents}
           onClose={closeYearDateModal}
           onOpenDay={openYearDateInDayView}
           onSelectEvent={showYearDateEventDetails}

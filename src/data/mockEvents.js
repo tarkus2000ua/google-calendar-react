@@ -34,6 +34,18 @@ const mockEvents = [
     allDay: false,
     calendar: 'Work',
     color: 'yellow',
+    status: 'declined',
+  },
+  {
+    id: 'submit-expense-report',
+    title: 'Submit expense report',
+    start: '2026-09-10T10:00:00',
+    end: '2026-09-10T10:30:00',
+    allDay: false,
+    calendar: 'Work',
+    color: 'blue',
+    status: 'completed',
+    type: 'task',
   },
   {
     id: 'dentist',
