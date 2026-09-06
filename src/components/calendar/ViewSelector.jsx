@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import icons from '../ui/icons.jsx'
 
 const VIEW_OPTIONS = [
@@ -24,7 +24,26 @@ function ViewSelector({ activeView, onViewChange }) {
     'completed-tasks': true,
   })
   const buttonRef = useRef(null)
+  const selectorRef = useRef(null)
   const activeOption = VIEW_OPTIONS.find((option) => option.value === activeView) ?? VIEW_OPTIONS[0]
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined
+    }
+
+    function closeOnOutsidePointer(event) {
+      if (!selectorRef.current?.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer)
+
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer)
+    }
+  }, [isOpen])
 
   function closeMenu() {
     setIsOpen(false)
@@ -51,7 +70,7 @@ function ViewSelector({ activeView, onViewChange }) {
   }
 
   return (
-    <div className="view-selector" onKeyDown={handleKeyDown}>
+    <div className="view-selector" onKeyDown={handleKeyDown} ref={selectorRef}>
       <button
         className="view-selector__button"
         type="button"
