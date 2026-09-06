@@ -1,0 +1,160 @@
+.year-date-modal {
+  position: fixed;
+  z-index: 12;
+  width: min(264px, calc(100vw - 24px));
+  padding: 16px;
+  border: 1px solid #d7dee8;
+  border-radius: 22px;
+  background: #e9eef6;
+  box-shadow: 0 2px 6px rgba(60, 64, 67, 0.24), 0 8px 16px rgba(60, 64, 67, 0.16);
+}
+
+.year-date-modal__header {
+  position: relative;
+  display: grid;
+  min-height: 82px;
+  place-items: center;
+}
+
+.year-date-modal__date-button {
+  display: grid;
+  justify-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.year-date-modal__weekday {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.year-date-modal__date {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  margin: 2px 0 0;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-text);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.year-date-modal__date-button:hover .year-date-modal__date {
+  background: rgba(60, 64, 67, 0.12);
+}
+
+.year-date-modal__date-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.year-date-modal__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.year-date-modal__close:hover {
+  background: rgba(60, 64, 67, 0.08);
+}
+
+.year-date-modal__close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.year-date-modal__close svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.year-date-modal__events {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.year-date-modal__event {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+}
+
+.year-date-modal__event:hover {
+  filter: brightness(0.94);
+}
+
+.year-date-modal__event:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.year-date-modal__event--blue {
+  background: #1a73e8;
+}
+
+.year-date-modal__event--purple {
+  background: #9334e6;
+}
+
+.year-date-modal__event--green {
+  background: #188038;
+}
+
+.year-date-modal__event--yellow {
+  background: #f9ab00;
+  color: #202124;
+}
+
+.year-date-modal__event--red {
+  background: #d93025;
+}
+
+.year-date-modal__event-time {
+  font-size: 10px;
+}
+
+.year-date-modal__event-title {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.year-date-modal__empty {
+  margin: 18px 0 4px;
+  color: var(--color-text);
+  font-size: 13px;
+}

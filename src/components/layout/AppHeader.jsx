@@ -13,6 +13,7 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
   const isWeekView = activeView === 'week'
   const isFourDayView = activeView === 'four-days'
   const isScheduleView = activeView === 'schedule'
+  const isYearView = activeView === 'year'
   const periodLabel = isDayView
     ? displayDate.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -26,8 +27,10 @@ function AppHeader({ activeView, displayDate, onViewChange, onToday, onPreviousP
         ? formatFourDayRange(displayDate)
       : isScheduleView
         ? formatScheduleRange(displayDate)
+        : isYearView
+          ? String(displayDate.getFullYear())
         : formatMonthYear(displayDate)
-  const periodUnit = isDayView || isScheduleView ? 'day' : isWeekView ? 'week' : isFourDayView ? '4 days' : 'month'
+  const periodUnit = isDayView || isScheduleView ? 'day' : isWeekView ? 'week' : isFourDayView ? '4 days' : isYearView ? 'year' : 'month'
   const previousLabel = `Previous ${periodUnit}`
   const nextLabel = `Next ${periodUnit}`
 

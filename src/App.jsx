@@ -4,6 +4,7 @@ import CalendarCanvas from './components/layout/CalendarCanvas.jsx'
 import Sidebar from './components/layout/Sidebar.jsx'
 import EventDetailModal from './components/calendar/EventDetailModal.jsx'
 import CreateEventModal from './components/calendar/CreateEventModal.jsx'
+import YearDateModal from './components/calendar/YearDateModal.jsx'
 import mockEvents from './data/mockEvents.js'
 import { addDays, addMonths, getStartOfMonth } from './utils/dateHelpers.js'
 import './App.css'
@@ -31,6 +32,8 @@ function App() {
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [eventTrigger, setEventTrigger] = useState(null)
   const [selectedEventChipId, setSelectedEventChipId] = useState(null)
+  const [selectedYearDate, setSelectedYearDate] = useState(null)
+  const [yearDateTrigger, setYearDateTrigger] = useState(null)
   const [events, setEvents] = useState(mockEvents)
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false)
   const [isCreateEventDocked, setIsCreateEventDocked] = useState(false)
@@ -51,6 +54,7 @@ function App() {
       if (activeView === 'day' || activeView === 'schedule') return addDays(date, -1)
       if (activeView === 'four-days') return addDays(date, -4)
       if (activeView === 'week') return addDays(date, -7)
+      if (activeView === 'year') return addMonths(date, -12)
 
       return addMonths(date, -1)
     })
@@ -61,6 +65,7 @@ function App() {
       if (activeView === 'day' || activeView === 'schedule') return addDays(date, 1)
       if (activeView === 'four-days') return addDays(date, 4)
       if (activeView === 'week') return addDays(date, 7)
+      if (activeView === 'year') return addMonths(date, 12)
 
       return addMonths(date, 1)
     })
@@ -80,6 +85,26 @@ function App() {
     setDisplayDate(date)
   }
 
+  function selectYearDate(date, trigger) {
+    setSelectedDate(date)
+    setSelectedDateTrigger(trigger)
+    setSelectedYearDate(date)
+    setYearDateTrigger(trigger)
+  }
+
+  function closeYearDateModal() {
+    setSelectedYearDate(null)
+    setYearDateTrigger(null)
+    setSelectedEvent(null)
+    setSelectedEventChipId(null)
+  }
+
+  function openYearDateInDayView(date) {
+    closeYearDateModal()
+    setDisplayDate(date)
+    setActiveView('day')
+  }
+
   function toggleCalendar(calendarName) {
     setVisibleCalendars((calendars) => (
       calendars.includes(calendarName)
@@ -89,6 +114,13 @@ function App() {
   }
 
   function showEventDetails(event, trigger, eventChipId) {
+    closeYearDateModal()
+    setSelectedEvent(event)
+    setEventTrigger(trigger)
+    setSelectedEventChipId(eventChipId)
+  }
+
+  function showYearDateEventDetails(event, trigger, eventChipId) {
     setSelectedEvent(event)
     setEventTrigger(trigger)
     setSelectedEventChipId(eventChipId)
@@ -183,6 +215,7 @@ function App() {
             displayMonth={displayMonth}
             events={events}
             onSelectDate={openCreateAtDate}
+            onSelectYearDate={selectYearDate}
             onSelectTime={openCreateAtTime}
             onDraftAnchor={openCreateFromDraft}
             onSelectEvent={showEventDetails}
@@ -194,6 +227,16 @@ function App() {
         </div>
       </div>
       {selectedEvent && <EventDetailModal event={selectedEvent} onClose={closeEventDetails} trigger={eventTrigger} />}
+      {selectedYearDate && (
+        <YearDateModal
+          date={selectedYearDate}
+          events={events.filter((event) => visibleCalendars.includes(event.calendar))}
+          onClose={closeYearDateModal}
+          onOpenDay={openYearDateInDayView}
+          onSelectEvent={showYearDateEventDetails}
+          trigger={yearDateTrigger}
+        />
+      )}
       {isCreateEventOpen && (
         <CreateEventModal
           initialDate={draftEvent?.date ?? selectedDate ?? displayDate}

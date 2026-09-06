@@ -1,0 +1,169 @@
+.year-view {
+  min-height: calc(100vh - 96px);
+  padding: 28px;
+  background: var(--color-surface);
+}
+
+.year-view__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 36px 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.year-view__month {
+  min-width: 0;
+}
+
+.year-view__month-title {
+  margin: 0 0 10px;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.year-view__weekdays,
+.year-view__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.year-view__weekdays {
+  margin-bottom: 3px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.year-view__days {
+  grid-auto-rows: 30px;
+}
+
+.year-view__day,
+.year-view__day-placeholder {
+  min-width: 0;
+  min-height: 0;
+}
+
+.year-view__day {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-self: center;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.year-view__day:hover {
+  background: var(--color-surface-hover);
+}
+
+.year-view__day:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.year-view__day--selected {
+  background: #d2e3fc;
+  color: #174ea6;
+  font-weight: 600;
+}
+
+.year-view__day--selected:hover {
+  background: #d2e3fc;
+}
+
+.year-view__day--today {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.year-view__day--today:hover {
+  background: var(--color-primary);
+}
+
+.year-view__event-markers {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  display: flex;
+  gap: 2px;
+  transform: translateX(-50%);
+}
+
+.year-view__event-marker {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+}
+
+.year-view__event-marker--blue {
+  background: #1a73e8;
+}
+
+.year-view__event-marker--purple {
+  background: #9334e6;
+}
+
+.year-view__event-marker--green {
+  background: #188038;
+}
+
+.year-view__event-marker--yellow {
+  background: #f9ab00;
+}
+
+.year-view__event-marker--red {
+  background: #d93025;
+}
+
+.year-view__day--today .year-view__event-marker {
+  background: #fff;
+}
+
+@media (max-width: 900px) {
+  .year-view {
+    min-height: 60vh;
+  }
+}
+
+@media (max-width: 620px) {
+  .year-view {
+    min-height: 520px;
+    padding: 20px 16px;
+  }
+
+  .year-view__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 18px;
+  }
+
+  .year-view__month-title {
+    font-size: 14px;
+  }
+
+  .year-view__days {
+    grid-auto-rows: 26px;
+  }
+
+  .year-view__weekdays,
+  .year-view__day {
+    font-size: 10px;
+  }
+
+  .year-view__day {
+    width: 24px;
+    height: 24px;
+  }
+}
