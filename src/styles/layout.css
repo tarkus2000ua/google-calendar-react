@@ -265,13 +265,15 @@
 .create-button {
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
+  min-height: 56px;
   gap: 12px;
-  padding: 0 18px;
-  border-radius: 24px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
   background: var(--color-surface);
   box-shadow: var(--shadow-control);
   color: var(--color-text);
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -282,17 +284,19 @@
 
 .create-button:hover {
   background: var(--color-surface-subtle);
-  box-shadow: 0 2px 5px rgba(60, 64, 67, 0.25);
+  box-shadow: 0 3px 7px rgba(60, 64, 67, 0.28);
 }
 
 .create-button svg {
-  color: var(--color-primary);
+  width: 24px;
+  height: 24px;
+  color: var(--color-text);
 }
 
 .create-button__chevron {
-  width: 16px !important;
-  height: 16px !important;
-  margin-left: -4px;
+  width: 18px !important;
+  height: 18px !important;
+  margin-left: -2px;
   color: var(--color-text-muted) !important;
 }
 
@@ -625,6 +629,7 @@
 
 .calendar-app__body {
   min-height: calc(100vh - var(--header-height));
+  position: relative;
 }
 
 .view-selector__button:hover,
@@ -759,5 +764,143 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+/* Step 18: sidebar toggle and header control alignment. */
+.today-button {
+  min-height: 40px;
+  padding: 0 18px;
+  border-color: #80868b;
+  border-radius: 22px;
+}
+
+.sidebar {
+  overflow: hidden;
+  transition: flex-basis 220ms cubic-bezier(0.2, 0, 0, 1), padding 220ms cubic-bezier(0.2, 0, 0, 1), border-color 160ms ease;
+}
+
+.sidebar > * {
+  transition: opacity 140ms ease, transform 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.calendar-app--sidebar-collapsed .sidebar {
+  width: 0;
+  flex-basis: 0;
+  padding-right: 0;
+  padding-left: 0;
+  border-right-color: transparent;
+}
+
+.calendar-app--sidebar-collapsed .sidebar > * {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-8px);
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    max-height: 560px;
+    transition: max-height 260ms cubic-bezier(0.2, 0, 0, 1), padding 220ms cubic-bezier(0.2, 0, 0, 1), border-color 160ms ease;
+  }
+
+  .calendar-app--sidebar-collapsed .sidebar {
+    width: auto;
+    max-height: 0;
+    min-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom-color: transparent;
+  }
+
+  .calendar-app--sidebar-collapsed .sidebar > * {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 620px) {
+  .today-button {
+    min-height: 36px;
+    padding: 0 14px;
+  }
+}
+
+/* Step 18 refinement: persistent Create action for a collapsed sidebar. */
+.create-button--compact {
+  width: 56px;
+  min-height: 56px;
+  justify-content: center;
+  padding: 0;
+  border-radius: 16px;
+}
+
+.create-button--compact .create-button__label,
+.create-button--compact .create-button__chevron {
+  display: none;
+}
+
+.calendar-app--sidebar-collapsed > .calendar-app__body > .create-control--compact {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  left: 16px;
+}
+
+@media (max-width: 620px) {
+  .create-button {
+    min-height: 56px;
+    border-radius: 16px;
+  }
+
+  .create-button--compact {
+    width: 56px;
+    min-height: 56px;
+    border-radius: 16px;
+  }
+
+  .calendar-app--sidebar-collapsed > .calendar-app__body > .create-control--compact {
+    top: 12px;
+    left: 12px;
+  }
+}
+
+/* Step 18 refinement: continuous shell background and flush calendar canvas. */
+.app-header,
+.sidebar {
+  background: var(--color-surface-subtle);
+}
+
+.app-header {
+  border-bottom: 0;
+}
+
+.sidebar {
+  border-right: 0;
+}
+
+.calendar-canvas {
+  padding: 0 0 16px;
+  background: var(--color-surface-subtle);
+}
+
+.calendar-canvas__surface {
+  border: 0;
+  border-radius: 24px;
+  min-height: calc(100vh - var(--header-height) - 16px);
+}
+
+.calendar-app--sidebar-collapsed .calendar-canvas {
+  padding-left: 8px;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .calendar-canvas {
+    padding-bottom: 12px;
   }
 }

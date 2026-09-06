@@ -8,7 +8,8 @@ import {
 import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
-function AppHeader({ activeView, displayDate, displayOptions, onDisplayOptionToggle, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+function AppHeader({ activeView, displayDate, displayOptions, isSidebarCollapsed, onDisplayOptionToggle, onSidebarToggle, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+  const todayDay = new Date().getDate()
   const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
   const isFourDayView = activeView === 'four-days'
@@ -37,9 +38,15 @@ function AppHeader({ activeView, displayDate, displayOptions, onDisplayOptionTog
   return (
     <header className="app-header">
       <div className="app-header__identity">
-        <IconButton ariaLabel="Open navigation" icon="menu" />
+        <IconButton
+          ariaControls="calendar-sidebar"
+          ariaExpanded={!isSidebarCollapsed}
+          ariaLabel={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          icon="menu"
+          onClick={onSidebarToggle}
+        />
         <div className="calendar-brand" aria-label="Calendar">
-          <span className="calendar-brand__icon" aria-hidden="true">31</span>
+          <span className="calendar-brand__icon" aria-hidden="true">{todayDay}</span>
           <span className="calendar-brand__name">Calendar</span>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
 import SidebarSection from './SidebarSection.jsx'
 import MiniCalendar from '../calendar/MiniCalendar.jsx'
+import CreateControl from './CreateControl.jsx'
 import icons from '../ui/icons.jsx'
 
 const MY_CALENDARS = [
@@ -10,12 +10,6 @@ const MY_CALENDARS = [
 
 const OTHER_CALENDARS = [
   { color: 'holidays', name: 'Holidays' },
-]
-
-const CREATE_TYPES = [
-  { label: 'Event', value: 'event' },
-  { label: 'Task', value: 'task' },
-  { label: 'Appointment schedule', value: 'appointment' },
 ]
 
 function CalendarList({ calendars, onToggleCalendar, visibleCalendars }) {
@@ -53,6 +47,7 @@ function SectionControl({ icon }) {
 
 function Sidebar({
   displayMonth,
+  isCollapsed,
   selectedDate,
   onPreviousMonth,
   onNextMonth,
@@ -61,67 +56,15 @@ function Sidebar({
   visibleCalendars,
   onCreate,
 }) {
-  const [isCreateMenuOpen, setIsCreateMenuOpen] = useState(false)
-  const createControlRef = useRef(null)
-  const createButtonRef = useRef(null)
-
-  useEffect(() => {
-    if (!isCreateMenuOpen) return undefined
-
-    function closeOnOutsidePointer(event) {
-      if (!createControlRef.current?.contains(event.target)) {
-        setIsCreateMenuOpen(false)
-      }
-    }
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer)
-
-    return () => document.removeEventListener('pointerdown', closeOnOutsidePointer)
-  }, [isCreateMenuOpen])
-
-  function selectCreateType(type) {
-    setIsCreateMenuOpen(false)
-    onCreate(createButtonRef.current, type)
-  }
-
-  function handleCreateKeyDown(event) {
-    if (event.key !== 'Escape' || !isCreateMenuOpen) return
-
-    event.preventDefault()
-    setIsCreateMenuOpen(false)
-    createButtonRef.current?.focus()
-  }
-
   return (
-    <aside className="sidebar" aria-label="Calendar sidebar">
-      <div className="create-control" ref={createControlRef} onKeyDown={handleCreateKeyDown}>
-        <button
-          className="create-button"
-          type="button"
-          aria-controls="create-menu"
-          aria-expanded={isCreateMenuOpen}
-          aria-haspopup="menu"
-          onClick={() => setIsCreateMenuOpen((isOpen) => !isOpen)}
-          ref={createButtonRef}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          Create
-          <svg className="create-button__chevron" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m7 10 5 5 5-5" />
-          </svg>
-        </button>
-        {isCreateMenuOpen && (
-          <div className="create-menu" id="create-menu" role="menu" aria-label="Create">
-            {CREATE_TYPES.map((item) => (
-              <button key={item.value} className="create-menu__item" type="button" role="menuitem" onClick={() => selectCreateType(item.value)}>
-                {item.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+    <aside
+      className={`sidebar${isCollapsed ? ' sidebar--collapsed' : ''}`}
+      aria-hidden={isCollapsed}
+      aria-label="Calendar sidebar"
+      id="calendar-sidebar"
+      inert={isCollapsed || undefined}
+    >
+      <CreateControl onCreate={onCreate} />
 
       <section className="sidebar-section" aria-label="Mini calendar">
         <MiniCalendar

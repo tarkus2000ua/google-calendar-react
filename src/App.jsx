@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import AppHeader from './components/layout/AppHeader.jsx'
 import CalendarCanvas from './components/layout/CalendarCanvas.jsx'
+import CreateControl from './components/layout/CreateControl.jsx'
 import Sidebar from './components/layout/Sidebar.jsx'
 import EventDetailModal from './components/calendar/EventDetailModal.jsx'
 import CreateEventModal from './components/calendar/CreateEventModal.jsx'
@@ -48,6 +49,7 @@ function App() {
   const [draftEvent, setDraftEvent] = useState(null)
   const [selectedDateTrigger, setSelectedDateTrigger] = useState(null)
   const [activeView, setActiveView] = useState('month')
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [visibleCalendars, setVisibleCalendars] = useState(['Work', 'Personal', 'Holidays'])
   const [displayOptions, setDisplayOptions] = useState(DEFAULT_DISPLAY_OPTIONS)
   const displayMonth = getStartOfMonth(displayDate)
@@ -58,7 +60,10 @@ function App() {
   ))
 
   function showToday() {
-    setDisplayDate(new Date())
+    const today = new Date()
+
+    setDisplayDate(today)
+    setSelectedDate(today)
   }
 
   function showPreviousPeriod() {
@@ -208,20 +213,24 @@ function App() {
 
   return (
     <>
-      <div className={`calendar-app${isCreateEventDocked ? ' calendar-app--composer-docked' : ''}`}>
+      <div className={`calendar-app${isCreateEventDocked ? ' calendar-app--composer-docked' : ''}${isSidebarCollapsed ? ' calendar-app--sidebar-collapsed' : ''}`}>
         <AppHeader
           activeView={activeView}
           displayOptions={displayOptions}
           displayDate={displayDate}
+          isSidebarCollapsed={isSidebarCollapsed}
           onDisplayOptionToggle={toggleDisplayOption}
+          onSidebarToggle={() => setIsSidebarCollapsed((isCollapsed) => !isCollapsed)}
           onViewChange={setActiveView}
           onToday={showToday}
           onPreviousPeriod={showPreviousPeriod}
           onNextPeriod={showNextPeriod}
         />
         <div className="calendar-app__body">
+          {isSidebarCollapsed && !isCreateEventDocked && <CreateControl compact onCreate={openCreateEvent} />}
           <Sidebar
-            displayMonth={displayMonth}
+          displayMonth={displayMonth}
+          isCollapsed={isSidebarCollapsed}
             selectedDate={activeView === 'schedule' ? displayDate : selectedDate}
             onPreviousMonth={showPreviousMonth}
             onNextMonth={showNextMonth}
