@@ -3,6 +3,15 @@
   background: var(--color-surface);
 }
 
+.calendar-app--composer-docked {
+  margin-left: var(--composer-docked-width, 540px);
+}
+
+.calendar-app--composer-docked .sidebar,
+.calendar-app--composer-docked .app-header__identity {
+  display: none;
+}
+
 .app-header {
   position: relative;
   z-index: 4;
@@ -266,6 +275,11 @@
   font-weight: 500;
 }
 
+.create-control {
+  position: relative;
+  width: fit-content;
+}
+
 .create-button:hover {
   background: var(--color-surface-subtle);
   box-shadow: 0 2px 5px rgba(60, 64, 67, 0.25);
@@ -273,6 +287,49 @@
 
 .create-button svg {
   color: var(--color-primary);
+}
+
+.create-button__chevron {
+  width: 16px !important;
+  height: 16px !important;
+  margin-left: -4px;
+  color: var(--color-text-muted) !important;
+}
+
+.create-menu {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 4px);
+  left: 0;
+  display: grid;
+  min-width: 196px;
+  overflow: hidden;
+  padding: 4px 0;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
+  box-shadow: 0 2px 6px rgba(60, 64, 67, 0.24), 0 8px 16px rgba(60, 64, 67, 0.16);
+}
+
+.create-menu__item {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.create-menu__item:hover,
+.create-menu__item:focus-visible {
+  background: #e8eaed;
+}
+
+.create-menu__item:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
 }
 
 .sidebar-section {
@@ -455,6 +512,10 @@
 }
 
 @media (max-width: 900px) {
+  .calendar-app--composer-docked {
+    margin-left: 0;
+  }
+
   .app-header {
     flex-wrap: wrap;
     gap: 8px 16px;
@@ -526,6 +587,11 @@
   .create-button {
     grid-column: 1 / -1;
     justify-content: center;
+  }
+
+  .create-control {
+    grid-column: 1 / -1;
+    justify-self: stretch;
   }
 
   .sidebar-section__control {

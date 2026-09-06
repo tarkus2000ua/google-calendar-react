@@ -21,7 +21,7 @@ function formatHour(hour) {
   return `${hour % 12} ${hour < 12 ? 'AM' : 'PM'}`
 }
 
-function DayView({ displayDate, events, onSelectEvent, selectedEventChipId }) {
+function DayView({ displayDate, draftEvent, events, onDraftAnchor, onSelectEvent, onSelectTime, selectedEventChipId }) {
   const [currentDate, setCurrentDate] = useState(() => new Date())
   const currentTimeTop = (currentDate.getHours() + (currentDate.getMinutes() / 60)) * HOUR_HEIGHT
   const today = isSameDay(displayDate, currentDate)
@@ -56,7 +56,7 @@ function DayView({ displayDate, events, onSelectEvent, selectedEventChipId }) {
               {HOURS.map((hour) => <span className="week-view__time-label" key={hour}>{formatHour(hour)}</span>)}
             </div>
             <div className="day-view__day-columns">
-              <TimeGridDayColumn currentDate={currentDate} currentTimeTop={currentTimeTop} date={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />
+            <TimeGridDayColumn currentDate={currentDate} currentTimeTop={currentTimeTop} date={displayDate} draftEvent={draftEvent} events={events} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />
             </div>
           </div>
         </div>

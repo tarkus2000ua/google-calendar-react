@@ -17,7 +17,7 @@ function formatHour(hour) {
   return `${hour % 12} ${hour < 12 ? 'AM' : 'PM'}`
 }
 
-function WeekView({ displayDate, events, onSelectEvent, selectedEventChipId }) {
+function WeekView({ displayDate, draftEvent, events, onDraftAnchor, onSelectEvent, onSelectTime, selectedEventChipId }) {
   const weekStart = getStartOfWeek(displayDate)
   const weekDates = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index))
   const [currentDate, setCurrentDate] = useState(() => new Date())
@@ -70,9 +70,12 @@ function WeekView({ displayDate, events, onSelectEvent, selectedEventChipId }) {
                   currentDate={currentDate}
                   currentTimeTop={currentTimeTop}
                   date={date}
+                  draftEvent={draftEvent}
                   events={events}
                   key={date.toISOString()}
+                  onDraftAnchor={onDraftAnchor}
                   onSelectEvent={onSelectEvent}
+                  onSelectTime={onSelectTime}
                   selectedEventChipId={selectedEventChipId}
                 />
               ))}

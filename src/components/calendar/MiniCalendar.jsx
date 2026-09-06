@@ -63,7 +63,7 @@ function MiniCalendar({ displayMonth, selectedDate, onPreviousMonth, onNextMonth
                   year: 'numeric',
                 })}
                 aria-pressed={selected}
-                onClick={() => onSelectDate(date)}
+                onClick={(event) => onSelectDate(date, event.currentTarget)}
               >
                 {date.getDate()}
               </button>

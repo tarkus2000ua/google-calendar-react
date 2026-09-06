@@ -2,7 +2,6 @@ import MonthView from '../calendar/MonthView.jsx'
 import WeekView from '../calendar/WeekView.jsx'
 import DayView from '../calendar/DayView.jsx'
 import AgendaView from '../calendar/AgendaView.jsx'
-import mockEvents from '../../data/mockEvents.js'
 
 const VIEW_LABELS = {
   day: 'Day',
@@ -28,16 +27,16 @@ function CalendarPlaceholder({ activeView }) {
   )
 }
 
-function CalendarCanvas({ activeView, displayDate, displayMonth, onSelectEvent, selectedEventChipId, visibleCalendars }) {
-  const events = mockEvents.filter((event) => visibleCalendars.includes(event.calendar))
+function CalendarCanvas({ activeView, displayDate, displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, onSelectTime, selectedDate, selectedEventChipId, visibleCalendars }) {
+  const visibleEvents = events.filter((event) => visibleCalendars.includes(event.calendar))
 
   return (
     <main className="calendar-canvas" aria-label="Calendar workspace">
       <div className="calendar-canvas__surface">
-        {activeView === 'month' && <MonthView displayMonth={displayMonth} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'week' && <WeekView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'day' && <DayView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
-        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={events} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'month' && <MonthView displayMonth={displayMonth} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectDate={onSelectDate} onSelectEvent={onSelectEvent} selectedDate={selectedDate} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'week' && <WeekView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'day' && <DayView displayDate={displayDate} draftEvent={draftEvent} events={visibleEvents} onDraftAnchor={onDraftAnchor} onSelectEvent={onSelectEvent} onSelectTime={onSelectTime} selectedEventChipId={selectedEventChipId} />}
+        {activeView === 'schedule' && <AgendaView displayDate={displayDate} events={visibleEvents} onSelectEvent={onSelectEvent} selectedEventChipId={selectedEventChipId} />}
         {activeView !== 'month' && activeView !== 'week' && activeView !== 'day' && activeView !== 'schedule' && <CalendarPlaceholder activeView={activeView} />}
       </div>
     </main>

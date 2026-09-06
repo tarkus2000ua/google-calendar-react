@@ -108,6 +108,10 @@
   min-height: 1344px;
 }
 
+.day-view .week-view__timed-event--draft {
+  right: 50%;
+}
+
 @media (max-width: 900px) {
   .day-view {
     height: 70vh;

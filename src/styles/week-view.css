@@ -217,6 +217,12 @@
   color: #fff;
 }
 
+.week-view__timed-event--draft {
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(32, 33, 36, 0.45);
+  cursor: default;
+}
+
 .week-view__timed-event-title,
 .week-view__timed-event-time {
   display: block;

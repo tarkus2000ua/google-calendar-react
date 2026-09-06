@@ -1,9 +1,11 @@
+import { useLayoutEffect, useRef } from 'react'
 import EventChip from './EventChip.jsx'
 import {
   compareDates,
   formatMonthYear,
   getMonthGridDates,
   isDateInRange,
+  isSameDay,
   isSameMonth,
   toDateKey,
 } from '../../utils/dateHelpers.js'
@@ -11,10 +13,25 @@ import '../../styles/month-view.css'
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-function MonthView({ displayMonth, events, onSelectEvent, selectedEventChipId }) {
+function formatDraftTime(value) {
+  return new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    hour12: false,
+    minute: '2-digit',
+  }).format(value)
+}
+
+function MonthView({ displayMonth, draftEvent, events, onDraftAnchor, onSelectDate, onSelectEvent, selectedDate, selectedEventChipId }) {
   const gridDates = getMonthGridDates(displayMonth)
   const monthLabel = formatMonthYear(displayMonth)
   const currentDate = new Date()
+  const draftChipRef = useRef(null)
+
+  useLayoutEffect(() => {
+    if (draftEvent && draftChipRef.current) {
+      onDraftAnchor(draftChipRef.current)
+    }
+  }, [draftEvent, onDraftAnchor])
 
   return (
     <section className="month-view" aria-label={monthLabel}>
@@ -33,10 +50,12 @@ function MonthView({ displayMonth, events, onSelectEvent, selectedEventChipId })
           const dayComparison = compareDates(date, currentDate)
           const today = dayComparison === 0
           const isPastDate = dayComparison < 0
+          const isSelectedDay = selectedDate ? isSameDay(date, selectedDate) : false
+          const isDraftDate = draftEvent ? isSameDay(date, draftEvent.date) : false
 
           return (
             <div
-              className={`month-view__day${isCurrentMonth ? '' : ' month-view__day--outside'}${today ? ' month-view__day--today' : ''}`}
+              className={`month-view__day${isCurrentMonth ? '' : ' month-view__day--outside'}${today ? ' month-view__day--today' : ''}${isSelectedDay ? ' month-view__day--selected' : ''}`}
               role="gridcell"
               aria-label={date.toLocaleDateString('en-US', {
                 weekday: 'long',
@@ -45,6 +64,14 @@ function MonthView({ displayMonth, events, onSelectEvent, selectedEventChipId })
                 year: 'numeric',
               })}
               key={date.toISOString()}
+              onClick={(event) => onSelectDate(date, event.currentTarget)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  onSelectDate(date, event.currentTarget)
+                }
+              }}
+              tabIndex={0}
             >
               <div className="month-view__date-number">{date.getDate()}</div>
               <div className="month-view__events">
@@ -58,6 +85,12 @@ function MonthView({ displayMonth, events, onSelectEvent, selectedEventChipId })
                     onSelectEvent={onSelectEvent}
                   />
                 ))}
+                {isDraftDate && (
+                  <div className="month-view__event month-view__event--blue month-view__event--draft" ref={draftChipRef} aria-hidden="true">
+                    {draftEvent.displayTime && <span className="month-view__event-time">{formatDraftTime(draftEvent.start)}</span>}
+                    <span className="month-view__event-title">(No title)</span>
+                  </div>
+                )}
               </div>
             </div>
           )

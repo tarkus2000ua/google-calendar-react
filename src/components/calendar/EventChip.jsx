@@ -15,7 +15,10 @@ function EventChip({ event, eventChipId, isPast, isSelected, onSelectEvent }) {
       aria-label={`Open details for ${event.title}`}
       data-event-chip="true"
       title={event.title}
-      onClick={(clickEvent) => onSelectEvent(event, clickEvent.currentTarget, eventChipId)}
+      onClick={(clickEvent) => {
+        clickEvent.stopPropagation()
+        onSelectEvent(event, clickEvent.currentTarget, eventChipId)
+      }}
     >
       {!event.allDay && <span className="month-view__event-time">{formatEventTime(event.start)}</span>}
       <span className="month-view__event-title">{event.title}</span>
