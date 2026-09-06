@@ -5,6 +5,7 @@ import {
   isSameDay,
   parseLocalDate,
   startOfDay,
+  toDateKey,
 } from '../../utils/dateHelpers.js'
 
 const HOUR_HEIGHT = 56
@@ -34,7 +35,7 @@ function getTimedEventSegment(event, date) {
   return { height, top }
 }
 
-function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, events }) {
+function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, events, onSelectEvent, selectedEventChipId }) {
   const isPastDate = compareDates(date, currentDate) < 0
 
   if (area === 'all-day') {
@@ -42,15 +43,23 @@ function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, 
 
     return (
       <div className="week-view__all-day-cell">
-        {allDayEvents.map((event) => (
-          <div
-            className={`week-view__all-day-event week-view__event--${event.color}${isPastDate ? ' week-view__event--past' : ''}`}
-            title={event.title}
-            key={`${event.id}-${date.toISOString()}`}
-          >
-            {event.title}
-          </div>
-        ))}
+        {allDayEvents.map((event) => {
+          const eventChipId = `${event.id}-${toDateKey(date)}`
+
+          return (
+            <button
+              className={`week-view__all-day-event week-view__event--${event.color}${isPastDate ? ' week-view__event--past' : ''}${selectedEventChipId === eventChipId ? ' week-view__event--selected' : ''}`}
+              type="button"
+              aria-label={`Open details for ${event.title}`}
+              data-event-chip="true"
+              title={event.title}
+              key={eventChipId}
+              onClick={(clickEvent) => onSelectEvent(event, clickEvent.currentTarget, eventChipId)}
+            >
+              {event.title}
+            </button>
+          )
+        })}
       </div>
     )
   }
@@ -72,17 +81,25 @@ function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, 
           <span className="week-view__current-time-dot" aria-hidden="true" />
         </div>
       )}
-      {timedEvents.map(({ event, segment }) => (
-        <div
-          className={`week-view__timed-event week-view__event--${event.color}${isPastDate ? ' week-view__event--past' : ''}`}
-          style={{ top: `${segment.top}px`, height: `${segment.height}px` }}
-          title={`${event.title}, ${formatEventTime(event.start)}`}
-          key={event.id}
-        >
-          <span className="week-view__timed-event-title">{event.title}</span>
-          <span className="week-view__timed-event-time">{formatEventTime(event.start)}</span>
-        </div>
-      ))}
+      {timedEvents.map(({ event, segment }) => {
+        const eventChipId = `${event.id}-${toDateKey(date)}`
+
+        return (
+          <button
+            className={`week-view__timed-event week-view__event--${event.color}${isPastDate ? ' week-view__event--past' : ''}${selectedEventChipId === eventChipId ? ' week-view__event--selected' : ''}`}
+            type="button"
+            aria-label={`Open details for ${event.title}`}
+            data-event-chip="true"
+            style={{ top: `${segment.top}px`, height: `${segment.height}px` }}
+            title={`${event.title}, ${formatEventTime(event.start)}`}
+            key={eventChipId}
+            onClick={(clickEvent) => onSelectEvent(event, clickEvent.currentTarget, eventChipId)}
+          >
+            <span className="week-view__timed-event-title">{event.title}</span>
+            <span className="week-view__timed-event-time">{formatEventTime(event.start)}</span>
+          </button>
+        )
+      })}
     </div>
   )
 }

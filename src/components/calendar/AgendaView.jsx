@@ -62,7 +62,7 @@ function getDateGroups(displayDate, events) {
   return groups
 }
 
-function AgendaView({ displayDate, events }) {
+function AgendaView({ displayDate, events, onSelectEvent, selectedEventChipId }) {
   const dateGroups = getDateGroups(displayDate, events)
 
   return (
@@ -89,15 +89,26 @@ function AgendaView({ displayDate, events }) {
                 </header>
 
                 <div className="agenda-view__events">
-                  {eventsForDate.map((event) => (
-                    <article className="agenda-view__event" key={`${event.id}-${dateKey}`}>
-                      <span className={`agenda-view__event-marker agenda-view__event-marker--${event.color}`} aria-hidden="true" />
-                      <time className="agenda-view__event-time" dateTime={event.start}>
-                        {getOccurrenceTime(event, date)}
-                      </time>
-                      <span className="agenda-view__event-title">{event.title}</span>
-                    </article>
-                  ))}
+                  {eventsForDate.map((event) => {
+                    const eventChipId = `${event.id}-${dateKey}`
+
+                    return (
+                      <button
+                        className={`agenda-view__event${selectedEventChipId === eventChipId ? ' agenda-view__event--selected' : ''}`}
+                        type="button"
+                        aria-label={`Open details for ${event.title}`}
+                        data-event-chip="true"
+                        key={eventChipId}
+                        onClick={(clickEvent) => onSelectEvent(event, clickEvent.currentTarget, eventChipId)}
+                      >
+                        <span className={`agenda-view__event-marker agenda-view__event-marker--${event.color}`} aria-hidden="true" />
+                        <time className="agenda-view__event-time" dateTime={event.start}>
+                          {getOccurrenceTime(event, date)}
+                        </time>
+                        <span className="agenda-view__event-title">{event.title}</span>
+                      </button>
+                    )
+                  })}
                 </div>
               </section>
             )

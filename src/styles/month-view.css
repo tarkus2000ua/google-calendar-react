@@ -71,11 +71,30 @@
   min-width: 0;
   gap: 4px;
   padding: 3px 5px;
+  border: 0;
   border-radius: 3px;
   color: #fff;
+  cursor: pointer;
+  font: inherit;
   font-size: 11px;
   line-height: 1.25;
+  text-align: left;
   white-space: nowrap;
+}
+
+.month-view__event:hover {
+  filter: brightness(0.94);
+}
+
+.month-view__event:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.month-view__event--selected {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 6px rgba(32, 33, 36, 0.45);
 }
 
 .month-view__event--past {

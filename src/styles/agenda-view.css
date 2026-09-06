@@ -52,6 +52,30 @@
   min-height: 48px;
   gap: 12px;
   padding: 8px 24px 8px 12px;
+  border: 0;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.agenda-view__event:hover {
+  background: var(--color-surface-hover);
+}
+
+.agenda-view__event:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.agenda-view__event--selected {
+  position: relative;
+  z-index: 1;
+  background: var(--color-surface-hover);
+  box-shadow: 0 2px 6px rgba(32, 33, 36, 0.3);
 }
 
 .agenda-view__event + .agenda-view__event {
