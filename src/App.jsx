@@ -9,6 +9,7 @@ function App() {
   const [displayDate, setDisplayDate] = useState(() => new Date())
   const [selectedDate, setSelectedDate] = useState(null)
   const [activeView, setActiveView] = useState('month')
+  const [visibleCalendars, setVisibleCalendars] = useState(['Work', 'Personal', 'Holidays'])
   const displayMonth = getStartOfMonth(displayDate)
 
   function showToday() {
@@ -46,6 +47,14 @@ function App() {
     setDisplayDate(date)
   }
 
+  function toggleCalendar(calendarName) {
+    setVisibleCalendars((calendars) => (
+      calendars.includes(calendarName)
+        ? calendars.filter((calendar) => calendar !== calendarName)
+        : [...calendars, calendarName]
+    ))
+  }
+
   return (
     <div className="calendar-app">
       <AppHeader
@@ -63,8 +72,15 @@ function App() {
           onPreviousMonth={showPreviousMonth}
           onNextMonth={showNextMonth}
           onSelectDate={selectDate}
+          onToggleCalendar={toggleCalendar}
+          visibleCalendars={visibleCalendars}
         />
-        <CalendarCanvas activeView={activeView} displayDate={displayDate} displayMonth={displayMonth} />
+        <CalendarCanvas
+          activeView={activeView}
+          displayDate={displayDate}
+          displayMonth={displayMonth}
+          visibleCalendars={visibleCalendars}
+        />
       </div>
     </div>
   )

@@ -19,6 +19,11 @@ const icons = {
       <path d="m5 9 7 7 7-7" />
     </svg>
   ),
+  plus: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  ),
   search: (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="10.8" cy="10.8" r="5.8" />

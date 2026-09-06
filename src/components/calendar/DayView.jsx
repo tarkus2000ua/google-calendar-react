@@ -21,7 +21,7 @@ function formatHour(hour) {
   return `${hour % 12} ${hour < 12 ? 'AM' : 'PM'}`
 }
 
-function DayView({ displayDate }) {
+function DayView({ displayDate, events }) {
   const [currentDate, setCurrentDate] = useState(() => new Date())
   const currentTimeTop = (currentDate.getHours() + (currentDate.getMinutes() / 60)) * HOUR_HEIGHT
   const today = isSameDay(displayDate, currentDate)
@@ -46,7 +46,7 @@ function DayView({ displayDate }) {
         <div className="day-view__all-day-row">
           <div className="week-view__all-day-label">all-day</div>
           <div className="day-view__all-day-days">
-            <TimeGridDayColumn area="all-day" currentDate={currentDate} date={displayDate} />
+            <TimeGridDayColumn area="all-day" currentDate={currentDate} date={displayDate} events={events} />
           </div>
         </div>
 
@@ -56,7 +56,7 @@ function DayView({ displayDate }) {
               {HOURS.map((hour) => <span className="week-view__time-label" key={hour}>{formatHour(hour)}</span>)}
             </div>
             <div className="day-view__day-columns">
-              <TimeGridDayColumn currentDate={currentDate} currentTimeTop={currentTimeTop} date={displayDate} />
+              <TimeGridDayColumn currentDate={currentDate} currentTimeTop={currentTimeTop} date={displayDate} events={events} />
             </div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-import mockEvents from '../../data/mockEvents.js'
 import EventChip from './EventChip.jsx'
 import {
   compareDates,
@@ -11,7 +10,7 @@ import '../../styles/month-view.css'
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-function MonthView({ displayMonth }) {
+function MonthView({ displayMonth, events }) {
   const gridDates = getMonthGridDates(displayMonth)
   const monthLabel = formatMonthYear(displayMonth)
   const currentDate = new Date()
@@ -28,7 +27,7 @@ function MonthView({ displayMonth }) {
 
       <div className="month-view__grid" role="grid" aria-label={`${monthLabel} calendar`}>
         {gridDates.map((date) => {
-          const eventsForDate = mockEvents.filter((event) => isDateInRange(date, event.start, event.end))
+          const eventsForDate = events.filter((event) => isDateInRange(date, event.start, event.end))
           const isCurrentMonth = isSameMonth(date, displayMonth)
           const dayComparison = compareDates(date, currentDate)
           const today = dayComparison === 0

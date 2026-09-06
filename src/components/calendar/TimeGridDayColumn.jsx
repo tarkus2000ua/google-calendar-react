@@ -1,4 +1,3 @@
-import mockEvents from '../../data/mockEvents.js'
 import {
   addDays,
   compareDates,
@@ -35,11 +34,11 @@ function getTimedEventSegment(event, date) {
   return { height, top }
 }
 
-function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date }) {
+function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date, events }) {
   const isPastDate = compareDates(date, currentDate) < 0
 
   if (area === 'all-day') {
-    const allDayEvents = mockEvents.filter((event) => event.allDay && isDateInRange(date, event.start, event.end))
+    const allDayEvents = events.filter((event) => event.allDay && isDateInRange(date, event.start, event.end))
 
     return (
       <div className="week-view__all-day-cell">
@@ -57,7 +56,7 @@ function TimeGridDayColumn({ area = 'timed', currentDate, currentTimeTop, date }
   }
 
   const today = isSameDay(date, currentDate)
-  const timedEvents = mockEvents
+  const timedEvents = events
     .filter((event) => !event.allDay)
     .map((event) => ({ event, segment: getTimedEventSegment(event, date) }))
     .filter(({ segment }) => segment)
