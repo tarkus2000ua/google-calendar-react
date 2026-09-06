@@ -5,10 +5,13 @@ import {
   formatWeekRange,
   startOfDay,
 } from '../../utils/dateHelpers.js'
+import { useState } from 'react'
+import CalendarSearch from './CalendarSearch.jsx'
 import ViewSelector from '../calendar/ViewSelector.jsx'
 import IconButton from '../ui/IconButton.jsx'
 
-function AppHeader({ activeView, displayDate, displayOptions, isSidebarCollapsed, onDisplayOptionToggle, onSidebarToggle, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+function AppHeader({ activeView, displayDate, displayOptions, events, isSidebarCollapsed, onDisplayOptionToggle, onSearchResultSelect, onSidebarToggle, onViewChange, onToday, onPreviousPeriod, onNextPeriod }) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const todayDay = new Date().getDate()
   const isDayView = activeView === 'day'
   const isWeekView = activeView === 'week'
@@ -52,18 +55,28 @@ function AppHeader({ activeView, displayDate, displayOptions, isSidebarCollapsed
       </div>
 
       <div className="app-header__navigation" aria-label="Calendar navigation">
-        <button className="today-button" type="button" onClick={onToday}>Today</button>
-        <div className="date-navigation">
-          <IconButton ariaLabel={previousLabel} icon="chevron-left" onClick={onPreviousPeriod} />
-          <IconButton ariaLabel={nextLabel} icon="chevron-right" onClick={onNextPeriod} />
-        </div>
-        <p className="current-period">{periodLabel}</p>
+        {isSearchOpen ? (
+          <CalendarSearch
+            events={events}
+            onClose={() => setIsSearchOpen(false)}
+            onSelectEvent={onSearchResultSelect}
+          />
+        ) : (
+          <>
+            <button className="today-button" type="button" onClick={onToday}>Today</button>
+            <div className="date-navigation">
+              <IconButton ariaLabel={previousLabel} icon="chevron-left" onClick={onPreviousPeriod} />
+              <IconButton ariaLabel={nextLabel} icon="chevron-right" onClick={onNextPeriod} />
+            </div>
+            <p className="current-period">{periodLabel}</p>
+          </>
+        )}
       </div>
 
       <ViewSelector activeView={activeView} displayOptions={displayOptions} onDisplayOptionToggle={onDisplayOptionToggle} onViewChange={onViewChange} />
 
       <div className="app-header__utilities">
-        <IconButton ariaLabel="Search" icon="search" />
+        {!isSearchOpen && <IconButton ariaLabel="Search" className="app-header__search-button" icon="search" onClick={() => setIsSearchOpen(true)} />}
         <IconButton ariaLabel="Help" icon="help" />
         <IconButton ariaLabel="Settings" icon="settings" />
         <button className="account-button" type="button" aria-label="Google Account">AM</button>

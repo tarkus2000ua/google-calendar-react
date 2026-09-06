@@ -52,6 +52,7 @@ function CalendarApp({ activeView, displayDate }) {
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [eventTrigger, setEventTrigger] = useState(null)
   const [selectedEventChipId, setSelectedEventChipId] = useState(null)
+  const [eventDetailPlacement, setEventDetailPlacement] = useState('anchored')
   const [selectedYearDate, setSelectedYearDate] = useState(null)
   const [yearDateTrigger, setYearDateTrigger] = useState(null)
   const [events, setEvents] = useState(mockEvents)
@@ -183,17 +184,28 @@ function CalendarApp({ activeView, displayDate }) {
     setSelectedEvent(event)
     setEventTrigger(trigger)
     setSelectedEventChipId(eventChipId)
+    setEventDetailPlacement('anchored')
   }
 
   function showYearDateEventDetails(event, trigger, eventChipId) {
     setSelectedEvent(event)
     setEventTrigger(trigger)
     setSelectedEventChipId(eventChipId)
+    setEventDetailPlacement('anchored')
+  }
+
+  function showSearchEventDetails(event) {
+    closeYearDateModal()
+    setSelectedEvent(event)
+    setEventTrigger(null)
+    setSelectedEventChipId(null)
+    setEventDetailPlacement('centered')
   }
 
   function closeEventDetails() {
     setSelectedEvent(null)
     setSelectedEventChipId(null)
+    setEventDetailPlacement('anchored')
   }
 
   function openCreateEvent(trigger, type) {
@@ -259,8 +271,10 @@ function CalendarApp({ activeView, displayDate }) {
           activeView={activeView}
           displayOptions={displayOptions}
           displayDate={displayDate}
+          events={visibleEvents}
           isSidebarCollapsed={isSidebarCollapsed}
           onDisplayOptionToggle={toggleDisplayOption}
+          onSearchResultSelect={showSearchEventDetails}
           onSidebarToggle={() => setIsSidebarCollapsed((isCollapsed) => !isCollapsed)}
           onViewChange={changeView}
           onToday={showToday}
@@ -297,7 +311,7 @@ function CalendarApp({ activeView, displayDate }) {
           />
         </div>
       </div>
-      {selectedEvent && <EventDetailModal event={selectedEvent} onClose={closeEventDetails} trigger={eventTrigger} />}
+      {selectedEvent && <EventDetailModal event={selectedEvent} isCentered={eventDetailPlacement === 'centered'} onClose={closeEventDetails} trigger={eventTrigger} />}
       {selectedYearDate && (
         <YearDateModal
           date={selectedYearDate}

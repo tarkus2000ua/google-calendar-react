@@ -43,7 +43,7 @@ function clamp(value, minimum, maximum) {
   return Math.min(Math.max(value, minimum), maximum)
 }
 
-function EventDetailModal({ event, onClose, trigger }) {
+function EventDetailModal({ event, isCentered = false, onClose, trigger }) {
   const closeButtonRef = useRef(null)
   const dialogRef = useRef(null)
   const onCloseRef = useRef(onClose)
@@ -89,6 +89,8 @@ function EventDetailModal({ event, onClose, trigger }) {
   useLayoutEffect(() => {
     triggerRef.current = trigger
 
+    if (isCentered) return undefined
+
     function updatePosition() {
       const anchor = triggerRef.current?.getBoundingClientRect()
       const popover = dialogRef.current?.getBoundingClientRect()
@@ -118,15 +120,15 @@ function EventDetailModal({ event, onClose, trigger }) {
       window.removeEventListener('resize', updatePosition)
       window.removeEventListener('scroll', updatePosition, true)
     }
-  }, [event.id, trigger])
+  }, [event.id, isCentered, trigger])
 
   return (
     <section
-      className={`event-detail-modal${position ? ' event-detail-modal--positioned' : ''}`}
+      className={`event-detail-modal${isCentered ? ' event-detail-modal--centered' : position ? ' event-detail-modal--positioned' : ''}`}
       role="dialog"
       aria-labelledby={titleId}
       ref={dialogRef}
-      style={position ?? undefined}
+      style={isCentered ? undefined : position ?? undefined}
     >
       <header className="event-detail-modal__header">
         <div className="event-detail-modal__utilities" aria-hidden="true">
